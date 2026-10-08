@@ -1,0 +1,221 @@
+/* Layout lengths use rem so type, spacing, controls and artwork grow together.
+   The root scale covers 1920px layouts on scaled 4K displays as well as 3840px.
+   Existing tablet and mobile breakpoints keep their original proportions. */
+@media (min-width: 80rem) {
+  body .desktop-nav a,
+  body .button,
+  body .feature-card p,
+  body .capability-item p,
+  body .management-list p,
+  body .license-panel p,
+  body .contribution-card p,
+  body .source-resources p {
+    font-size: 1rem;
+  }
+
+  body .hero-description {
+    font-size: 1.25rem;
+    line-height: 1.7;
+  }
+
+  body .section-heading p,
+  body .protocol-layout > div:first-child > p,
+  body .tech-two-column > div > p,
+  body .management-layout > div:first-child p,
+  body .doc-section > p {
+    font-size: 1.0625rem;
+    line-height: 1.8;
+  }
+
+  body .page-hero p,
+  body .docs-lede,
+  body .manifesto p {
+    font-size: 1.125rem;
+  }
+
+  body .button-small,
+  body .arrow-link,
+  body .protocol-row p,
+  body .transport-grid p,
+  body .transport-grid strong,
+  body .trust-strip span,
+  body .github-nav,
+  body .install-tabs button,
+  body .install-command pre,
+  body .terminal-prompt,
+  body .footer-links a,
+  body .footer-top p,
+  body .source-resources > a,
+  body .docs-sidebar nav a,
+  body .docs-search input,
+  body .docs-help p,
+  body .docs-help a,
+  body .docs-toc nav a,
+  body .docs-source-link,
+  body .doc-related-links > a,
+  body .code-body pre,
+  body .journey-detail p {
+    font-size: 0.875rem;
+  }
+
+  body .hero-announcement,
+  body .eyebrow,
+  body .hero-fineprint,
+  body .globe-label,
+  body .globe-caption,
+  body .globe-tag strong,
+  body .install-footnote,
+  body .quickstart-bottom,
+  body .tech-note,
+  body .manifesto-values > span,
+  body .footer-bottom,
+  body .docs-help strong,
+  body .doc-note p {
+    font-size: 0.75rem;
+  }
+
+  body .hero-bottom,
+  body .globe-coordinate,
+  body .globe-tag span.mono,
+  body .card-index,
+  body .protocol-badge,
+  body .trust-strip .trust-intro,
+  body .quickstart-stamp span,
+  body .copy-button,
+  body .footer-license,
+  body .footer-links .mono,
+  body .docs-category,
+  body .docs-breadcrumb,
+  body .docs-article-meta,
+  body .docs-toc > .mono,
+  body .code-header,
+  body .doc-note > span,
+  body .journey-top,
+  body .journey-detail .mono,
+  body .journey-detail code,
+  body .management-list .mono,
+  body .policy-visual-heading,
+  body .policy-visual-row small,
+  body .policy-visual-footer,
+  body .manifesto-label,
+  body .source-art-label,
+  body .source-art-bottom,
+  body .license-mark > span {
+    font-size: 0.6875rem;
+  }
+
+  body .button-small {
+    min-height: 2.75rem;
+  }
+
+  body .feature-card p {
+    min-height: 5.5rem;
+  }
+
+  body .contribution-card p {
+    min-height: 8rem;
+  }
+
+  body .protocol-layout > div:first-child > p,
+  body .tech-two-column > div > p,
+  body .management-layout > div:first-child p {
+    max-width: 30rem;
+  }
+
+  body .docs-layout {
+    grid-template-columns: 14rem minmax(0, 44rem) 12rem;
+    justify-content: space-between;
+    gap: 3rem;
+  }
+
+  body .doc-section .install-tabs button,
+  body .doc-section .install-command pre,
+  body .doc-section .install-footnote {
+    font-size: 0.8125rem;
+  }
+
+  body .docs-sidebar nav a {
+    line-height: 1.5;
+  }
+
+  body .cta-panel p {
+    font-size: 1rem;
+  }
+
+  body .dashboard-sidebar {
+    width: 14rem;
+  }
+
+  body .dashboard-brand svg {
+    width: 10rem;
+    height: auto;
+  }
+
+  body .dashboard-navigation button,
+  body .query-search input,
+  body .query-filter select,
+  body .demo-table td,
+  body .dashboard-policy strong,
+  body .chart-heading {
+    font-size: 0.8125rem;
+  }
+
+  body .dashboard-metrics > div > span,
+  body .dashboard-metrics small,
+  body .metric-unit,
+  body .dashboard-policy div > span,
+  body .demo-table-note,
+  body .demo-table th,
+  body .demo-table small,
+  body .demo-table .mono,
+  body .query-status,
+  body .dashboard-workspace strong,
+  body .dashboard-workspace div span,
+  body .dashboard-sidebar-bottom {
+    font-size: 0.6875rem;
+  }
+
+  body .dashboard-titlebar > span,
+  body .dashboard-titlebar .demo-badge,
+  body .dashboard-nav-label,
+  body .dashboard-breadcrumb,
+  body .dashboard-period,
+  body .chart-heading > div,
+  body .chart-axis,
+  body .chart-time,
+  body .dashboard-bottom-bar,
+  body .dashboard-caption {
+    font-size: 0.625rem;
+  }
+
+  body .lucide,
+  body .github-nav > svg,
+  body .button > svg {
+    width: 1.125rem;
+    height: 1.125rem;
+  }
+
+  body .hero-fineprint svg,
+  body .hero-announcement svg,
+  body .hero-bottom svg,
+  body .copy-button svg,
+  body .github-nav > svg:last-child {
+    width: 0.875rem;
+    height: 0.875rem;
+  }
+
+  body .card-icon svg,
+  body .protocol-icon svg,
+  body .policy-icon svg {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+
+  body .encryption-node svg,
+  body .capability-item svg,
+  body .contribution-card > div > svg,
+  body .journey-step > svg {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+}

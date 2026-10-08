@@ -9,7 +9,10 @@ export const navigation = [
 ];
 
 export const installCommands = {
-  "Linux / macOS": "curl -fsSL https://raw.githubusercontent.com/NothingDNS/NothingDNS/main/install.sh | bash",
-  Windows: "irm https://raw.githubusercontent.com/NothingDNS/NothingDNS/main/install.ps1 | iex",
-  "From source": "git clone https://github.com/NothingDNS/NothingDNS.git\ncd NothingDNS\nmake build",
+  "Linux / macOS":
+    "curl -fsSL https://raw.githubusercontent.com/NothingDNS/NothingDNS/main/install.sh | bash",
+  Windows:
+    "irm https://raw.githubusercontent.com/NothingDNS/NothingDNS/main/install.ps1 | iex",
+  "From source":
+    "git clone https://github.com/NothingDNS/NothingDNS.git\ncd NothingDNS\nmake build",
 };

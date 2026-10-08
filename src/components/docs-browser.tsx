@@ -2,7 +2,16 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { ArrowLeft, ArrowRight, ArrowUpRight, BookOpen, ChevronRight, FileText, Search, Terminal } from "lucide-react";
+import {
+  ArrowLeft,
+  ArrowRight,
+  ArrowUpRight,
+  BookOpen,
+  ChevronRight,
+  FileText,
+  Search,
+  Terminal,
+} from "lucide-react";
 import { docs, docHref, type Doc } from "@/lib/docs";
 import { SOURCE } from "@/lib/site";
 import { InstallBox } from "./install";
@@ -10,9 +19,174 @@ import { CodeBlock } from "./ui";
 
 export function DocsBrowser({ doc }: { doc: Doc }) {
   const [search, setSearch] = useState("");
-  const matches = docs.filter((entry) => `${entry.label} ${entry.description} ${entry.sections.map((section) => section.title + section.body).join(" ")}`.toLowerCase().includes(search.toLowerCase()));
+  const matches = docs.filter((entry) =>
+    `${entry.label} ${entry.description} ${entry.sections.map((section) => section.title + section.body).join(" ")}`
+      .toLowerCase()
+      .includes(search.toLowerCase()),
+  );
   const currentIndex = docs.findIndex((entry) => entry.slug === doc.slug);
   const next = docs[currentIndex + 1];
   const previous = docs[currentIndex - 1];
-  return <div className="container docs-layout"><aside className="docs-sidebar"><Link href="/docs" className="docs-sidebar-title"><BookOpen size={19} />Documentation</Link><label className="docs-search"><Search size={15} /><input value={search} onChange={(event) => setSearch(event.target.value)} placeholder="Find a guide..." aria-label="Search documentation guides" /></label><span className="mono docs-category">BUILD YOUR NETWORK</span><nav aria-label="Documentation guides">{matches.map((entry) => <Link href={docHref(entry.slug)} key={entry.slug} className={entry.slug === doc.slug ? "selected" : ""} aria-current={entry.slug === doc.slug ? "page" : undefined}><FileText size={15} />{entry.label}{entry.slug === doc.slug && <ChevronRight size={13} />}</Link>)}</nav>{matches.length === 0 && <p className="docs-empty" role="status">No guides found. Try “DNS”, “zones”, or “CLI”.</p>}<div className="docs-help"><Terminal size={22} /><strong>Go straight to the source.</strong><p>The repository has the full technical reference.</p><a href={`${SOURCE}/docs/README.md`} target="_blank" rel="noopener noreferrer">Repository docs<ArrowUpRight size={14} /></a></div></aside><article className="docs-article"><div className="docs-breadcrumb mono"><Link href="/docs">DOCS</Link><ChevronRight size={12} /><span>{doc.label.toUpperCase()}</span></div><h1>{doc.title}</h1><p className="docs-lede">{doc.description}</p><div className="docs-article-meta mono"><span><span className="small-dot" />SOURCE-ALIGNED GUIDE</span><a href={`${SOURCE}/${doc.source}`} target="_blank" rel="noopener noreferrer">View full reference<ArrowUpRight size={12} /></a></div>{doc.sections.map((section) => <section className="doc-section" key={section.id} id={section.id}><h2><a href={`#${section.id}`}>{section.title}<span aria-hidden="true">#</span></a></h2><p>{section.body}</p>{doc.slug === "quick-start" && section.id === "install" && <InstallBox expanded />}{section.code && <CodeBlock code={section.code} language={section.language || "bash"} label={section.language === "yaml" ? "nothingdns.yaml" : "Terminal"} />}{section.note && <aside className="doc-note"><span className="mono">GOOD TO KNOW</span><p>{section.note}</p></aside>}{section.links && <div className="doc-related-links">{section.links.map((link) => <Link href={link.href} key={link.href} {...(link.href.startsWith("https:") ? { target: "_blank", rel: "noopener noreferrer" } : {})}>{link.label}<ArrowUpRight size={14} /></Link>)}</div>}</section>)}<div className="docs-pagination">{previous ? <Link href={docHref(previous.slug)}><ArrowLeft size={17} /><div><span className="mono">PREVIOUS</span>{previous.label}</div></Link> : <span />}{next && <Link href={docHref(next.slug)}><div><span className="mono">NEXT UP</span>{next.label}</div><ArrowRight size={17} /></Link>}</div></article><aside className="docs-toc"><span className="mono">ON THIS PAGE</span><nav aria-label="On this page">{doc.sections.map((section) => <a href={`#${section.id}`} key={section.id}>{section.title.replace(/^\d+\. /, "")}</a>)}</nav><span className="docs-toc-line" /><a className="docs-source-link" href={`${SOURCE}/${doc.source}`} target="_blank" rel="noopener noreferrer">Read on GitHub<ArrowUpRight size={13} /></a></aside></div>;
+  return (
+    <div className="container docs-layout">
+      <aside className="docs-sidebar">
+        <Link href="/docs" className="docs-sidebar-title">
+          <BookOpen size={19} />
+          Documentation
+        </Link>
+        <label className="docs-search">
+          <Search size={15} />
+          <input
+            value={search}
+            onChange={(event) => setSearch(event.target.value)}
+            placeholder="Find a guide..."
+            aria-label="Search documentation guides"
+          />
+        </label>
+        <span className="mono docs-category">BUILD YOUR NETWORK</span>
+        <nav aria-label="Documentation guides">
+          {matches.map((entry) => (
+            <Link
+              href={docHref(entry.slug)}
+              key={entry.slug}
+              className={entry.slug === doc.slug ? "selected" : ""}
+              aria-current={entry.slug === doc.slug ? "page" : undefined}
+            >
+              <FileText size={15} />
+              {entry.label}
+              {entry.slug === doc.slug && <ChevronRight size={13} />}
+            </Link>
+          ))}
+        </nav>
+        {matches.length === 0 && (
+          <p className="docs-empty" role="status">
+            No guides found. Try “DNS”, “zones”, or “CLI”.
+          </p>
+        )}
+        <div className="docs-help">
+          <Terminal size={22} />
+          <strong>Go straight to the source.</strong>
+          <p>The repository has the full technical reference.</p>
+          <a
+            href={`${SOURCE}/docs/README.md`}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Repository docs
+            <ArrowUpRight size={14} />
+          </a>
+        </div>
+      </aside>
+      <article className="docs-article">
+        <div className="docs-breadcrumb mono">
+          <Link href="/docs">DOCS</Link>
+          <ChevronRight size={12} />
+          <span>{doc.label.toUpperCase()}</span>
+        </div>
+        <h1>{doc.title}</h1>
+        <p className="docs-lede">{doc.description}</p>
+        <div className="docs-article-meta mono">
+          <span>
+            <span className="small-dot" />
+            SOURCE-ALIGNED GUIDE
+          </span>
+          <a
+            href={`${SOURCE}/${doc.source}`}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            View full reference
+            <ArrowUpRight size={12} />
+          </a>
+        </div>
+        {doc.sections.map((section) => (
+          <section className="doc-section" key={section.id} id={section.id}>
+            <h2>
+              <a href={`#${section.id}`}>
+                {section.title}
+                <span aria-hidden="true">#</span>
+              </a>
+            </h2>
+            <p>{section.body}</p>
+            {doc.slug === "quick-start" && section.id === "install" && (
+              <InstallBox expanded />
+            )}
+            {section.code && (
+              <CodeBlock
+                code={section.code}
+                language={section.language || "bash"}
+                label={
+                  section.language === "yaml" ? "nothingdns.yaml" : "Terminal"
+                }
+              />
+            )}
+            {section.note && (
+              <aside className="doc-note">
+                <span className="mono">GOOD TO KNOW</span>
+                <p>{section.note}</p>
+              </aside>
+            )}
+            {section.links && (
+              <div className="doc-related-links">
+                {section.links.map((link) => (
+                  <Link
+                    href={link.href}
+                    key={link.href}
+                    {...(link.href.startsWith("https:")
+                      ? { target: "_blank", rel: "noopener noreferrer" }
+                      : {})}
+                  >
+                    {link.label}
+                    <ArrowUpRight size={14} />
+                  </Link>
+                ))}
+              </div>
+            )}
+          </section>
+        ))}
+        <div className="docs-pagination">
+          {previous ? (
+            <Link href={docHref(previous.slug)}>
+              <ArrowLeft size={17} />
+              <div>
+                <span className="mono">PREVIOUS</span>
+                {previous.label}
+              </div>
+            </Link>
+          ) : (
+            <span />
+          )}
+          {next && (
+            <Link href={docHref(next.slug)}>
+              <div>
+                <span className="mono">NEXT UP</span>
+                {next.label}
+              </div>
+              <ArrowRight size={17} />
+            </Link>
+          )}
+        </div>
+      </article>
+      <aside className="docs-toc">
+        <span className="mono">ON THIS PAGE</span>
+        <nav aria-label="On this page">
+          {doc.sections.map((section) => (
+            <a href={`#${section.id}`} key={section.id}>
+              {section.title.replace(/^\d+\. /, "")}
+            </a>
+          ))}
+        </nav>
+        <span className="docs-toc-line" />
+        <a
+          className="docs-source-link"
+          href={`${SOURCE}/${doc.source}`}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Read on GitHub
+          <ArrowUpRight size={13} />
+        </a>
+      </aside>
+    </div>
+  );
 }

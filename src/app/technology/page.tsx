@@ -1,21 +1,298 @@
 import type { Metadata } from "next";
-import { ArrowUpRight, Database, FileCode2, Globe2, LockKeyhole, Radio, ShieldCheck, SlidersHorizontal, Terminal, Waypoints } from "lucide-react";
+import {
+  ArrowUpRight,
+  Database,
+  FileCode2,
+  Globe2,
+  LockKeyhole,
+  Radio,
+  ShieldCheck,
+  SlidersHorizontal,
+  Terminal,
+  Waypoints,
+} from "lucide-react";
 import { ArrowLink, Eyebrow, Reveal } from "@/components/ui";
 import { QueryJourney } from "@/components/query-journey";
 import { CallToAction } from "@/components/cta";
 import { BrandMark } from "@/components/brand";
 import { SOURCE } from "@/lib/site";
 
-export const metadata: Metadata = { title: "Technology", description: "Explore NothingDNS: encrypted transports, DNSSEC, policy filtering, authoritative and recursive DNS, built-in storage, and clustering.", alternates: { canonical: "/technology" } };
+export const metadata: Metadata = {
+  title: "Technology",
+  description:
+    "Explore NothingDNS: encrypted transports, DNSSEC, policy filtering, authoritative and recursive DNS, built-in storage, and clustering.",
+  alternates: { canonical: "/technology" },
+};
 
 export default function Technology() {
-  return <>
-    <section className="container page-hero technology-hero"><Reveal><Eyebrow>UNDER THE HOOD</Eyebrow><h1>The quiet power<br />behind <span className="hero-serif">every query.</span></h1><p>Serious DNS engineering. A refreshingly small footprint.<br />Meet the building blocks of a network that answers to you.</p></Reveal><div className="technology-emblem" aria-hidden="true"><span /><span /><span /><BrandMark /><small className="mono">ONE CONNECTED SYSTEM</small></div></section>
-    <div className="container tech-anchor-nav"><a href="#architecture">Architecture</a><a href="#encrypted">Encryption</a><a href="#policy">Policy</a><a href="#resilience">Resilience</a><a href="#management">Management</a><span className="mono">BUILT IN GO<ArrowUpRight size={12} /></span></div>
-    <section className="container section" id="architecture"><Reveal className="section-heading"><div><Eyebrow number="01">FOLLOW THE QUERY</Eyebrow><h2>One request.<br /><span className="muted">A thoughtful journey.</span></h2></div><p>Explore the core responsibilities behind a DNS answer.<br />Select a stage to see how the pieces fit together.</p></Reveal><Reveal><QueryJourney /></Reveal><div className="tech-note"><span>Conceptual overview. The exact path depends on your configuration and the query.</span><ArrowLink href={`${SOURCE}/docs/ARCHITECTURE.md`} external>Read the architecture</ArrowLink></div></section>
-    <section className="tech-band" id="encrypted"><div className="container section tech-two-column"><Reveal><Eyebrow number="02">PRIVATE BY DESIGN</Eyebrow><h2>Some things should<br />stay <span className="hero-serif accent-text">between us.</span></h2><p>Protect the path between clients and your server with encrypted DNS. Use DNSSEC validation to check signed answers, and sign the zones you control.</p><ArrowLink href="/docs/encrypted-dns">Configure encrypted DNS</ArrowLink></Reveal><Reveal className="transport-grid" delay={0.1}>{[{ title: "DoH", name: "DNS over HTTPS", sub: "DNS queries over an HTTPS connection." }, { title: "DoT", name: "DNS over TLS", sub: "A dedicated, TLS-encrypted DNS transport." }, { title: "DoQ", name: "DNS over QUIC", sub: "Encrypted DNS using the QUIC protocol." }, { title: "ODoH", name: "Oblivious DNS over HTTPS", sub: "Separate the client identity from its query." }].map((transport) => <div key={transport.title}><LockKeyhole size={18} /><h3>{transport.title}</h3><strong>{transport.name}</strong><p>{transport.sub}</p></div>)}</Reveal></div></section>
-    <section className="container section tech-two-column" id="policy"><Reveal className="policy-visual"><div className="policy-visual-heading mono"><ShieldCheck size={18} />POLICY ENGINE<span className="small-dot" /></div>{[{ label: "Access control", value: "TRUSTED NETWORKS", icon: SlidersHorizontal }, { label: "Response policy zones", value: "YOUR RULES", icon: FileCode2 }, { label: "Blocklists", value: "LESS NOISE", icon: ShieldCheck }, { label: "Response rate limiting", value: "MORE CONTROL", icon: Radio }].map(({ label, value, icon: Icon }, i) => <div className="policy-visual-row" key={label}><span className="mono">0{i + 1}</span><Icon size={19} /><strong>{label}</strong><small className="mono">{value}</small></div>)}<div className="policy-visual-footer mono">YOUR NETWORK. YOUR RULES.</div></Reveal><Reveal><Eyebrow number="03">CONTROL, WITHOUT THE CHAOS</Eyebrow><h2>A little more intention.<br /><span className="muted">A lot less noise.</span></h2><p>Use hosts-style lists, URL sources, or simple domain-per-line blocklists. Add RPZ policies and access rules to shape how your server answers.</p><p>Keep authoritative answers available while restricting recursion to trusted networks. Configure DNS Cookies and response rate limiting for additional control.</p><ArrowLink href="/docs/configuration">Make it your own</ArrowLink></Reveal></section>
-    <section className="tech-band" id="resilience"><div className="container section"><Reveal className="section-heading"><div><Eyebrow number="04">ROOM TO GROW</Eyebrow><h2>A solid foundation.<br /><span className="muted">At any scale.</span></h2></div><p>From a single node to a connected cluster.<br />Keep your DNS infrastructure in your own hands.</p></Reveal><div className="capability-grid">{[{ icon: Database, title: "Built-in persistence", text: "Embedded KV and write-ahead logging keep zone state durable. No external database to add to your stack." }, { icon: Waypoints, title: "Connected by design", text: "Gossip and Raft clustering support different consistency needs. Configure nodes, peers, and encrypted cluster communication." }, { icon: Globe2, title: "A world of answers", text: "AXFR / IXFR transfers, slave zones, split-horizon views, and GeoIP responses give your DNS room to adapt." }].map(({ icon: Icon, title, text }, i) => <Reveal className="capability-item" key={title} delay={i * 0.06}><Icon size={28} /><h3>{title}</h3><p>{text}</p></Reveal>)}</div><ArrowLink href={`${SOURCE}/docs/OPERATIONS.md`} external>Explore operations & deployment</ArrowLink></div></section>
-    <section className="container section" id="management"><Reveal className="management-layout"><div><Eyebrow number="05">THREE WAYS TO TAKE CONTROL</Eyebrow><h2>Work the way<br /><span className="hero-serif accent-text">you think.</span></h2><p>Click, script, or automate. The embedded dashboard, command-line tool, and REST API put the same server within reach.</p><ArrowLink href="/docs/management">Explore management</ArrowLink></div><div className="management-list">{[{ icon: SlidersHorizontal, title: "The dashboard", tag: "SEE IT", text: "An embedded React dashboard with zone management and WebSocket query streaming." }, { icon: Terminal, title: "The command line", tag: "SCRIPT IT", text: "Use dnsctl to inspect your server, manage zones, query records, and work with the cache." }, { icon: FileCode2, title: "The REST API", tag: "CONNECT IT", text: "Build on the management API with OpenAPI / Swagger documentation." }].map(({ icon: Icon, title, tag, text }) => <div key={title}><Icon size={23} /><div><span className="mono">{tag}</span><h3>{title}</h3><p>{text}</p></div><ArrowUpRight size={18} /></div>)}</div></Reveal></section><CallToAction />
-  </>;
+  return (
+    <>
+      <section className="container page-hero technology-hero">
+        <Reveal>
+          <Eyebrow>UNDER THE HOOD</Eyebrow>
+          <h1>
+            The quiet power
+            <br />
+            behind <span className="hero-serif">every query.</span>
+          </h1>
+          <p>
+            Serious DNS engineering. A refreshingly small footprint.
+            <br />
+            Meet the building blocks of a network that answers to you.
+          </p>
+        </Reveal>
+        <div className="technology-emblem" aria-hidden="true">
+          <span />
+          <span />
+          <span />
+          <BrandMark />
+          <small className="mono">ONE CONNECTED SYSTEM</small>
+        </div>
+      </section>
+      <div className="container tech-anchor-nav">
+        <a href="#architecture">Architecture</a>
+        <a href="#encrypted">Encryption</a>
+        <a href="#policy">Policy</a>
+        <a href="#resilience">Resilience</a>
+        <a href="#management">Management</a>
+        <span className="mono">
+          BUILT IN GO
+          <ArrowUpRight size={12} />
+        </span>
+      </div>
+      <section className="container section" id="architecture">
+        <Reveal className="section-heading">
+          <div>
+            <Eyebrow number="01">FOLLOW THE QUERY</Eyebrow>
+            <h2>
+              One request.
+              <br />
+              <span className="muted">A thoughtful journey.</span>
+            </h2>
+          </div>
+          <p>
+            Explore the core responsibilities behind a DNS answer.
+            <br />
+            Select a stage to see how the pieces fit together.
+          </p>
+        </Reveal>
+        <Reveal>
+          <QueryJourney />
+        </Reveal>
+        <div className="tech-note">
+          <span>
+            Conceptual overview. The exact path depends on your configuration
+            and the query.
+          </span>
+          <ArrowLink href={`${SOURCE}/docs/ARCHITECTURE.md`} external>
+            Read the architecture
+          </ArrowLink>
+        </div>
+      </section>
+      <section className="tech-band" id="encrypted">
+        <div className="container section tech-two-column">
+          <Reveal>
+            <Eyebrow number="02">PRIVATE BY DESIGN</Eyebrow>
+            <h2>
+              Some things should
+              <br />
+              stay <span className="hero-serif accent-text">between us.</span>
+            </h2>
+            <p>
+              Protect the path between clients and your server with encrypted
+              DNS. Use DNSSEC validation to check signed answers, and sign the
+              zones you control.
+            </p>
+            <ArrowLink href="/docs/encrypted-dns">
+              Configure encrypted DNS
+            </ArrowLink>
+          </Reveal>
+          <Reveal className="transport-grid" delay={0.1}>
+            {[
+              {
+                title: "DoH",
+                name: "DNS over HTTPS",
+                sub: "DNS queries over an HTTPS connection.",
+              },
+              {
+                title: "DoT",
+                name: "DNS over TLS",
+                sub: "A dedicated, TLS-encrypted DNS transport.",
+              },
+              {
+                title: "DoQ",
+                name: "DNS over QUIC",
+                sub: "Encrypted DNS using the QUIC protocol.",
+              },
+              {
+                title: "ODoH",
+                name: "Oblivious DNS over HTTPS",
+                sub: "Separate the client identity from its query.",
+              },
+            ].map((transport) => (
+              <div key={transport.title}>
+                <LockKeyhole size={18} />
+                <h3>{transport.title}</h3>
+                <strong>{transport.name}</strong>
+                <p>{transport.sub}</p>
+              </div>
+            ))}
+          </Reveal>
+        </div>
+      </section>
+      <section className="container section tech-two-column" id="policy">
+        <Reveal className="policy-visual">
+          <div className="policy-visual-heading mono">
+            <ShieldCheck size={18} />
+            POLICY ENGINE
+            <span className="small-dot" />
+          </div>
+          {[
+            {
+              label: "Access control",
+              value: "TRUSTED NETWORKS",
+              icon: SlidersHorizontal,
+            },
+            {
+              label: "Response policy zones",
+              value: "YOUR RULES",
+              icon: FileCode2,
+            },
+            { label: "Blocklists", value: "LESS NOISE", icon: ShieldCheck },
+            {
+              label: "Response rate limiting",
+              value: "MORE CONTROL",
+              icon: Radio,
+            },
+          ].map(({ label, value, icon: Icon }, i) => (
+            <div className="policy-visual-row" key={label}>
+              <span className="mono">0{i + 1}</span>
+              <Icon size={19} />
+              <strong>{label}</strong>
+              <small className="mono">{value}</small>
+            </div>
+          ))}
+          <div className="policy-visual-footer mono">
+            YOUR NETWORK. YOUR RULES.
+          </div>
+        </Reveal>
+        <Reveal>
+          <Eyebrow number="03">CONTROL, WITHOUT THE CHAOS</Eyebrow>
+          <h2>
+            A little more intention.
+            <br />
+            <span className="muted">A lot less noise.</span>
+          </h2>
+          <p>
+            Use hosts-style lists, URL sources, or simple domain-per-line
+            blocklists. Add RPZ policies and access rules to shape how your
+            server answers.
+          </p>
+          <p>
+            Keep authoritative answers available while restricting recursion to
+            trusted networks. Configure DNS Cookies and response rate limiting
+            for additional control.
+          </p>
+          <ArrowLink href="/docs/configuration">Make it your own</ArrowLink>
+        </Reveal>
+      </section>
+      <section className="tech-band" id="resilience">
+        <div className="container section">
+          <Reveal className="section-heading">
+            <div>
+              <Eyebrow number="04">ROOM TO GROW</Eyebrow>
+              <h2>
+                A solid foundation.
+                <br />
+                <span className="muted">At any scale.</span>
+              </h2>
+            </div>
+            <p>
+              From a single node to a connected cluster.
+              <br />
+              Keep your DNS infrastructure in your own hands.
+            </p>
+          </Reveal>
+          <div className="capability-grid">
+            {[
+              {
+                icon: Database,
+                title: "Built-in persistence",
+                text: "Embedded KV and write-ahead logging keep zone state durable. No external database to add to your stack.",
+              },
+              {
+                icon: Waypoints,
+                title: "Connected by design",
+                text: "Gossip and Raft clustering support different consistency needs. Configure nodes, peers, and encrypted cluster communication.",
+              },
+              {
+                icon: Globe2,
+                title: "A world of answers",
+                text: "AXFR / IXFR transfers, slave zones, split-horizon views, and GeoIP responses give your DNS room to adapt.",
+              },
+            ].map(({ icon: Icon, title, text }, i) => (
+              <Reveal className="capability-item" key={title} delay={i * 0.06}>
+                <Icon size={28} />
+                <h3>{title}</h3>
+                <p>{text}</p>
+              </Reveal>
+            ))}
+          </div>
+          <ArrowLink href={`${SOURCE}/docs/OPERATIONS.md`} external>
+            Explore operations & deployment
+          </ArrowLink>
+        </div>
+      </section>
+      <section className="container section" id="management">
+        <Reveal className="management-layout">
+          <div>
+            <Eyebrow number="05">THREE WAYS TO TAKE CONTROL</Eyebrow>
+            <h2>
+              Work the way
+              <br />
+              <span className="hero-serif accent-text">you think.</span>
+            </h2>
+            <p>
+              Click, script, or automate. The embedded dashboard, command-line
+              tool, and REST API put the same server within reach.
+            </p>
+            <ArrowLink href="/docs/management">Explore management</ArrowLink>
+          </div>
+          <div className="management-list">
+            {[
+              {
+                icon: SlidersHorizontal,
+                title: "The dashboard",
+                tag: "SEE IT",
+                text: "An embedded React dashboard with zone management and WebSocket query streaming.",
+              },
+              {
+                icon: Terminal,
+                title: "The command line",
+                tag: "SCRIPT IT",
+                text: "Use dnsctl to inspect your server, manage zones, query records, and work with the cache.",
+              },
+              {
+                icon: FileCode2,
+                title: "The REST API",
+                tag: "CONNECT IT",
+                text: "Build on the management API with OpenAPI / Swagger documentation.",
+              },
+            ].map(({ icon: Icon, title, tag, text }) => (
+              <div key={title}>
+                <Icon size={23} />
+                <div>
+                  <span className="mono">{tag}</span>
+                  <h3>{title}</h3>
+                  <p>{text}</p>
+                </div>
+                <ArrowUpRight size={18} />
+              </div>
+            ))}
+          </div>
+        </Reveal>
+      </section>
+      <CallToAction />
+    </>
+  );
 }

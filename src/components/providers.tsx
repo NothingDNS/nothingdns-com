@@ -5,7 +5,12 @@ import { MotionConfig } from "motion/react";
 
 export function Providers({ children }: { children: React.ReactNode }) {
   return (
-    <ThemeProvider attribute="data-theme" defaultTheme="dark" enableSystem disableTransitionOnChange>
+    <ThemeProvider
+      attribute="data-theme"
+      defaultTheme="dark"
+      enableSystem
+      disableTransitionOnChange
+    >
       <MotionConfig reducedMotion="user">{children}</MotionConfig>
     </ThemeProvider>
   );
