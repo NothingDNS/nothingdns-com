@@ -1,8 +1,14 @@
 import { ImageResponse } from "next/og";
 import { BrandWordmark } from "@/components/brand";
+export const dynamic = "force-static";
 export const alt = "NothingDNS — Less noise. More network.";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
+// Preserve an image extension so static hosts can serve the correct MIME type.
+export function generateImageMetadata() {
+  return [{ id: "nothingdns.png", alt, size, contentType }];
+}
+
 export default function Image() {
   return new ImageResponse(
     <div

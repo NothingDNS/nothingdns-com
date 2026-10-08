@@ -5,7 +5,10 @@
   "scripts": {
     "dev": "next dev --hostname 127.0.0.1",
     "build": "next build",
-    "start": "next start --hostname 127.0.0.1",
+    "start": "wrangler dev --experimental-new-config --ip 127.0.0.1 --port 3002",
+    "build:cloudflare": "pnpm build && wrangler build --experimental-new-config --experimental-cf-build-output",
+    "deploy:check": "pnpm build:cloudflare && cf deploy --prebuilt --dry-run",
+    "deploy": "pnpm build:cloudflare && cf deploy --prebuilt",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
@@ -20,7 +23,9 @@
     "@types/node": "^24.0.0",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
-    "typescript": "^5.9.0"
+    "cf": "1.0.0-beta.12",
+    "typescript": "^5.9.0",
+    "wrangler": "^4.148.0"
   },
   "packageManager": "pnpm@11.25.0"
 }

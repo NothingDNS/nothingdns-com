@@ -1,0 +1,1 @@
+This folder contains the built output assets for the worker "nothingdns-com" generated at 2026-10-08T11:35:27.859Z.
