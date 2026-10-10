@@ -1,36 +1,45 @@
 import type { SVGProps } from "react";
-import { brandPaths } from "@/lib/brand-paths";
-
-const BRAND_GREEN = "#00e878";
+import { brandColors, brandPaths } from "@/lib/brand-paths";
 
 export function BrandWordmark({
   ink = "currentColor",
-  green = BRAND_GREEN,
+  green,
+  width = 190,
+  height,
   className = "",
   ...props
 }: SVGProps<SVGSVGElement> & { ink?: string; green?: string }) {
   return (
     <svg
-      width="190"
-      height="25"
+      width={width}
+      height={
+        height ??
+        (typeof width === "number"
+          ? (width * brandPaths.height) / brandPaths.width
+          : "auto")
+      }
       viewBox={brandPaths.viewBox}
+      preserveAspectRatio="xMidYMid meet"
       fill="none"
       className={`brand-wordmark ${className}`}
       aria-hidden="true"
+      focusable="false"
       {...props}
     >
       <path
         className="brand-ink"
         fill={ink}
-        fillRule="evenodd"
+        fillRule="nonzero"
         d={brandPaths.whitePath}
       />
-      <path
-        className="brand-green"
-        fill={green}
-        fillRule="evenodd"
-        d={brandPaths.greenPath}
-      />
+      <g
+        className={green === undefined ? "brand-green" : undefined}
+        fill={green ?? brandColors.green}
+        fillRule="nonzero"
+      >
+        <path transform={brandPaths.markTransform} d={brandPaths.markPath} />
+        <path d={brandPaths.dnsPath} />
+      </g>
     </svg>
   );
 }
@@ -45,11 +54,13 @@ export function BrandMark({
       height="29"
       viewBox={brandPaths.markBox}
       fill="currentColor"
-      className={className}
+      className={`brand-mark ${className}`}
+      preserveAspectRatio="xMidYMid meet"
       aria-hidden="true"
+      focusable="false"
       {...props}
     >
-      <path fillRule="evenodd" d={brandPaths.markPath} />
+      <path fillRule="nonzero" d={brandPaths.markPath} />
     </svg>
   );
 }

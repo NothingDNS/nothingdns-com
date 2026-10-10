@@ -3,8 +3,9 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --hostname 127.0.0.1",
-    "build": "next build",
+    "brand:generate": "node scripts/generate-brand-assets.mjs",
+    "dev": "pnpm brand:generate && next dev --hostname 127.0.0.1",
+    "build": "pnpm brand:generate && next build",
     "start": "wrangler dev --experimental-new-config --ip 127.0.0.1 --port 3002",
     "build:cloudflare": "pnpm build && wrangler build --experimental-new-config --experimental-cf-build-output",
     "deploy:check": "pnpm build:cloudflare && cf deploy --prebuilt --dry-run",

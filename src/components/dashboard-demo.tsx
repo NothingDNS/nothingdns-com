@@ -87,7 +87,7 @@ export function DashboardDemo() {
       <div className="dashboard-layout">
         <aside className="dashboard-sidebar">
           <div className="dashboard-brand">
-            <BrandWordmark width={142} height={19} />
+            <BrandWordmark width={142} />
           </div>
           <div className="dashboard-workspace">
             <span className="workspace-icon">

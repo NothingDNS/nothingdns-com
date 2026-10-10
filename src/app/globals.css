@@ -198,8 +198,13 @@ h4 {
   height: auto;
   display: block;
 }
-.brand .brand-green {
-  filter: none;
+.brand-wordmark,
+.brand-mark {
+  display: block;
+  flex-shrink: 0;
+}
+.brand-wordmark .brand-green {
+  fill: var(--brand-active, #00e878);
 }
 .desktop-nav {
   display: flex;
@@ -851,6 +856,9 @@ h2 {
 }
 .dashboard-brand svg {
   color: #edf0f5;
+  width: 8.875rem;
+  height: auto;
+  max-width: 100%;
 }
 .dashboard-workspace {
   display: flex;

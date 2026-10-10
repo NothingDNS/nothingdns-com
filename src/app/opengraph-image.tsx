@@ -32,7 +32,7 @@ export default function Image() {
           letterSpacing: -1,
         }}
       >
-        <BrandWordmark width={320} height={42} ink="#f4f5f6" />
+        <BrandWordmark width={320} ink="#f4f5f6" />
       </div>
       <div
         style={{
