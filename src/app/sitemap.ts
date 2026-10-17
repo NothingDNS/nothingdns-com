@@ -7,6 +7,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/",
     "/technology",
     "/open-source",
+    "/download",
+    "/configure",
     ...docs.map((doc) => docHref(doc.slug)),
   ].map((path) => ({
     url: `${SITE_URL}${path}`,

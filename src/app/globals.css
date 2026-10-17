@@ -256,15 +256,6 @@ h4 {
   background: var(--surface-raised);
   color: var(--text);
 }
-.moon-icon {
-  display: none;
-}
-[data-theme="light"] .sun-icon {
-  display: none;
-}
-[data-theme="light"] .moon-icon {
-  display: block;
-}
 .header-divider {
   width: 0.0625rem;
   height: 1.25rem;
@@ -1618,17 +1609,6 @@ h2 {
 .footer-note .small-dot {
   width: 0.1875rem;
   height: 0.1875rem;
-}
-.footer-wordmark {
-  color: var(--text);
-  padding-top: 1.5rem;
-  user-select: none;
-  opacity: 0.13;
-}
-.footer-wordmark > svg {
-  display: block;
-  width: 100%;
-  height: auto;
 }
 .page-hero {
   position: relative;

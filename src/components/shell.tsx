@@ -3,26 +3,13 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useTheme } from "next-themes";
-import { ArrowUpRight, Menu, Moon, Sun, X } from "lucide-react";
+import { ArrowUpRight, Menu, X } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 import { BrandWordmark, GitHubIcon } from "./brand";
 import { navigation, REPO, SOURCE } from "@/lib/site";
-
-function ThemeToggle() {
-  const { resolvedTheme, setTheme } = useTheme();
-  return (
-    <button
-      className="icon-button theme-toggle"
-      type="button"
-      onClick={() => setTheme(resolvedTheme === "dark" ? "light" : "dark")}
-      aria-label="Toggle light and dark theme"
-    >
-      <Sun className="sun-icon" size={18} />
-      <Moon className="moon-icon" size={18} />
-    </button>
-  );
-}
+import { SiteSearch } from "./site-search";
+import { ThemePicker } from "./theme-picker";
+import { OxogStudio } from "./oxog-studio";
 
 export function Header() {
   const pathname = usePathname().replace(/\/+$/, "") || "/";
@@ -97,15 +84,24 @@ export function Header() {
               <Link
                 key={item.href}
                 href={item.href}
-                className={pathname === item.href ? "active" : ""}
-                aria-current={pathname === item.href ? "page" : undefined}
+                className={
+                  pathname === item.href || pathname.startsWith(`${item.href}/`)
+                    ? "active"
+                    : ""
+                }
+                aria-current={
+                  pathname === item.href || pathname.startsWith(`${item.href}/`)
+                    ? "page"
+                    : undefined
+                }
               >
                 {item.label}
               </Link>
             ))}
           </nav>
           <div className="header-actions">
-            <ThemeToggle />
+            <SiteSearch onOpen={() => setOpen(false)} />
+            <ThemePicker onOpen={() => setOpen(false)} />
             <span className="header-divider" />
             <a
               href={REPO}
@@ -157,7 +153,12 @@ export function Header() {
                   key={item.href}
                   href={item.href}
                   onClick={() => setOpen(false)}
-                  aria-current={pathname === item.href ? "page" : undefined}
+                  aria-current={
+                    pathname === item.href ||
+                    (item.href !== "/" && pathname.startsWith(`${item.href}/`))
+                      ? "page"
+                      : undefined
+                  }
                 >
                   <span className="mono">0{i + 1}</span>
                   {item.label}
@@ -202,6 +203,8 @@ export function Footer() {
               <span className="mono">EXPLORE</span>
               <Link href="/technology">Technology</Link>
               <Link href="/docs">Documentation</Link>
+              <Link href="/download">Download</Link>
+              <Link href="/configure">Configuration studio</Link>
               <Link href="/open-source">Open source</Link>
             </div>
             <div>
@@ -229,6 +232,7 @@ export function Footer() {
             </div>
           </div>
         </div>
+        <OxogStudio />
         <div className="footer-bottom">
           <span>© 2026 NothingDNS. Built for the open internet.</span>
           <span className="footer-note">
@@ -243,9 +247,6 @@ export function Footer() {
             MIT License
             <ArrowUpRight size={12} />
           </a>
-        </div>
-        <div className="footer-wordmark" aria-hidden="true">
-          <BrandWordmark />
         </div>
       </div>
     </footer>

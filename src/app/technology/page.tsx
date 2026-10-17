@@ -246,7 +246,7 @@ export default function Technology() {
       <section className="container section" id="management">
         <Reveal className="management-layout">
           <div>
-            <Eyebrow number="05">THREE WAYS TO TAKE CONTROL</Eyebrow>
+            <Eyebrow number="05">YOUR SERVER, WITHIN REACH</Eyebrow>
             <h2>
               Work the way
               <br />
@@ -277,6 +277,12 @@ export default function Technology() {
                 title: "The REST API",
                 tag: "CONNECT IT",
                 text: "Build on the management API with OpenAPI / Swagger documentation.",
+              },
+              {
+                icon: FileCode2,
+                title: "Client libraries",
+                tag: "BUILD ON IT",
+                text: "Official Python, TypeScript, Go, C# and Java SDKs wrap the server management API.",
               },
             ].map(({ icon: Icon, title, tag, text }) => (
               <div key={title}>

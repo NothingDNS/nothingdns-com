@@ -59,7 +59,7 @@ export function InstallBox({ expanded = false }: { expanded?: boolean }) {
           {platform === "Windows"
             ? "Run in an elevated PowerShell terminal."
             : platform === "From source"
-              ? "Requires Go 1.26.6+ and Make."
+              ? "Requires Go 1.26.9+ and Make."
               : "The script installs and configures NothingDNS."}
         </span>
         <Link href={expanded ? "/docs#verify" : "/docs"}>

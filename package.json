@@ -4,6 +4,8 @@
   "private": true,
   "scripts": {
     "brand:generate": "node scripts/generate-brand-assets.mjs",
+    "project:sync": "node scripts/sync-project-release.mjs",
+    "test": "node --test tests/*.test.mjs",
     "dev": "pnpm brand:generate && next dev --hostname 127.0.0.1",
     "build": "pnpm brand:generate && next build",
     "start": "wrangler dev --experimental-new-config --ip 127.0.0.1 --port 3002",

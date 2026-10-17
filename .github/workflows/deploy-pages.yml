@@ -55,6 +55,9 @@ jobs:
       - name: Typecheck
         run: pnpm typecheck
 
+      - name: Test configuration recipes
+        run: pnpm test
+
       - name: Build static site
         run: pnpm build
 

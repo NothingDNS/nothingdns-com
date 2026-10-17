@@ -69,9 +69,11 @@ export function ArrowLink({
 export function CopyButton({
   value,
   compact = false,
+  label = "Copy command",
 }: {
   value: string;
   compact?: boolean;
+  label?: string;
 }) {
   const [state, setState] = useState<"idle" | "copied" | "error">("idle");
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -96,8 +98,8 @@ export function CopyButton({
       type="button"
       className={`copy-button ${compact ? "compact" : ""}`}
       onClick={copy}
-      aria-label={state === "copied" ? "Copied to clipboard" : "Copy command"}
-      title="Copy command"
+      aria-label={state === "copied" ? "Copied to clipboard" : label}
+      title={label}
     >
       {state === "copied" ? <Check size={15} /> : <Copy size={15} />}
       {!compact && (

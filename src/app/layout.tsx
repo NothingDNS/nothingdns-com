@@ -4,6 +4,8 @@ import { Providers } from "@/components/providers";
 import { Footer, Header } from "@/components/shell";
 import { SITE_URL } from "@/lib/site";
 import "./globals.css";
+import "./enhancements.css";
+import "./appearance.css";
 
 const geist = Geist({
   subsets: ["latin"],

@@ -30,7 +30,7 @@ export const docs: Doc[] = [
       {
         id: "install",
         title: "01. Choose your starting point",
-        body: "Install on Linux, macOS, or Windows, or build directly from source. The source build requires Go 1.26.6+ and Make.",
+        body: "Install on Linux, macOS, or Windows, or build directly from source. The current source build requires Go 1.26.9+ and Make.",
         note: "Review install scripts before running them. The Windows installer requires an elevated PowerShell session. On Linux, the installer can use port 5353 if port 53 is occupied.",
       },
       {
@@ -51,6 +51,7 @@ export const docs: Doc[] = [
         title: "04. Make it your own",
         body: "Configure upstreams, add your authoritative zones, choose your policies, and connect monitoring. The example configuration is the starting point for the full schema.",
         links: [
+          { label: "Configuration studio", href: "/configure" },
           { label: "Configuration guide", href: "/docs/configuration" },
           { label: "Encrypted DNS", href: "/docs/encrypted-dns" },
           { label: "Deployment options", href: "/docs/deployment" },
@@ -269,6 +270,7 @@ export const docs: Doc[] = [
         title: "A self-contained binary",
         body: "The repository provides install scripts for Linux / macOS and Windows, plus release binaries. Verify release checksums before manual installation.",
         links: [
+          { label: "Platform binaries & checksums", href: "/download" },
           {
             label: "Latest GitHub release",
             href: "https://github.com/nothingdns/nothingdns/releases/latest",
@@ -318,6 +320,104 @@ export const docs: Doc[] = [
             label: "Backup, health checks & operations",
             href: `${SOURCE}/docs/OPERATIONS.md`,
           },
+        ],
+      },
+    ],
+  },
+  {
+    slug: "caching",
+    title: "Keep a good answer close.",
+    label: "Answer caching",
+    description:
+      "Understand forwarded and authoritative answer caching, TTLs, and what happens when your zones change.",
+    source: "docs/CHANGELOG.md",
+    sections: [
+      {
+        id: "essentials",
+        title: "Start with the answer cache",
+        body: "Enable the cache and choose its entry capacity. Cached answers reduce repeated resolution work; their lifetime follows the configured policy and the DNS data.",
+        code: "cache:\n  enabled: true\n  size: 10000",
+        language: "yaml",
+      },
+      {
+        id: "authoritative",
+        title: "Your own zones benefit too",
+        body: "Version 1.2.19 adds caching for eligible local authoritative answers, including exact matches, wildcard expansions, NXDOMAIN, and NODATA. Local zones keep priority over upstream cached data. A zone change immediately makes its older cached answers obsolete, and an unchanged zone-file reload can retain its answers.",
+        note: "Authoritative cache entries retain published record TTLs. They are not persisted, prefetched, or served stale. Answers signed on the fly for DO=1 clients, signer DNSKEY/NSEC3PARAM sets, and in-zone CNAME chains are excluded.",
+      },
+      {
+        id: "inspect",
+        title: "Inspect and clear",
+        body: "Use dnsctl to see cache statistics and flush the cache when needed. The dashboard and management SDKs also expose cache controls.",
+        code: "dnsctl cache stats\ndnsctl cache flush",
+        links: [
+          { label: "Management guide", href: "/docs/management" },
+          { label: "Client SDKs", href: "/docs/sdks" },
+        ],
+      },
+      {
+        id: "reference",
+        title: "Go deeper",
+        body: "The configuration reference documents TTL limits and cache policy. Release notes describe the boundaries of the new authoritative cache.",
+        links: [
+          {
+            label: "Configuration reference",
+            href: `${SOURCE}/docs/CONFIG_REFERENCE.md`,
+          },
+          {
+            label: "v1.2.19 release notes",
+            href: "https://github.com/NothingDNS/NothingDNS/releases/tag/v1.2.19",
+          },
+        ],
+      },
+    ],
+  },
+  {
+    slug: "sdks",
+    title: "Your server. Your language.",
+    label: "Client SDKs",
+    description:
+      "Automate server management with the official TypeScript, Python, Go, C#, and Java client libraries.",
+    source: "sdk/README.md",
+    sections: [
+      {
+        id: "overview",
+        title: "One API, five languages",
+        body: "The repository includes official client libraries for the REST management API. Work with zones, records, cache, configuration, access controls, blocklists, DNSSEC, upstreams, clustering, and monitoring from your application.",
+        note: "These are management clients. They do not perform DNS wire-protocol queries. Use a DNS client such as dig for lookups.",
+      },
+      {
+        id: "typescript",
+        title: "TypeScript / JavaScript",
+        body: "From a NothingDNS source checkout, install the TypeScript SDK locally. It uses the platform fetch API. The example authenticates to your own HTTP management listener and lists zones.",
+        code: "# From the NothingDNS repository\nnpm install ./sdk/typescript",
+        links: [
+          {
+            label: "TypeScript SDK reference",
+            href: `${SOURCE}/sdk/typescript/README.md`,
+          },
+        ],
+      },
+      {
+        id: "client",
+        title: "Connect your own server",
+        body: "Provide your management listener and credentials through your environment. The login token is reused by the client for subsequent operations.",
+        code: "import { NothingDNSClient } from '@nothingdns/sdk';\n\nconst client = new NothingDNSClient({\n  baseUrl: process.env.NDNS_URL ?? 'http://localhost:8080',\n});\n\nawait client.auth.login(\n  process.env.NDNS_USER!,\n  process.env.NDNS_PASSWORD!,\n);\n\nconst { zones } = await client.zones.list();\nconsole.log(zones);",
+        language: "typescript",
+        note: "Keep management credentials in your server-side environment. Use your protected management endpoint when connecting across machines.",
+      },
+      {
+        id: "languages",
+        title: "Pick the language that fits",
+        body: "Each language has its own installation steps, types, errors, and examples in the repository. Start with its README rather than assuming a package has already been installed.",
+        links: [
+          { label: "Python", href: `${SOURCE}/sdk/python/README.md` },
+          { label: "Go", href: `${SOURCE}/sdk/go/README.md` },
+          {
+            label: "C#",
+            href: `${SOURCE}/sdk/csharp/NothingDns.Sdk/README.md`,
+          },
+          { label: "Java", href: `${SOURCE}/sdk/java/README.md` },
         ],
       },
     ],

@@ -5,6 +5,7 @@ export const SITE_URL = "https://nothingdns.com";
 export const navigation = [
   { href: "/technology", label: "Technology" },
   { href: "/docs", label: "Documentation" },
+  { href: "/download", label: "Download" },
   { href: "/open-source", label: "Open source" },
 ];
 

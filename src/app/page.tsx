@@ -23,6 +23,12 @@ import { InstallBox } from "@/components/install";
 import { CallToAction } from "@/components/cta";
 import { GitHubIcon } from "@/components/brand";
 import { REPO } from "@/lib/site";
+import { projectRelease } from "@/lib/project";
+import {
+  CommonQuestions,
+  ProjectUpdates,
+  StarterSection,
+} from "@/components/project-sections";
 
 export const metadata: Metadata = { alternates: { canonical: "/" } };
 
@@ -32,9 +38,9 @@ export default function Home() {
       <section className="hero container">
         <div className="hero-copy">
           <Reveal>
-            <Link href="/open-source" className="hero-announcement">
+            <Link href="/download" className="hero-announcement">
               <span className="small-dot" />
-              <span>OPEN SOURCE. OPEN POSSIBILITIES.</span>
+              <span>{projectRelease.tag} · OPEN POSSIBILITIES.</span>
               <ArrowUpRight size={13} />
             </Link>
             <h1>
@@ -271,6 +277,7 @@ export default function Home() {
           </div>
         </div>
       </section>
+      <ProjectUpdates />
       <section className="section container protocol-section">
         <Reveal className="protocol-layout">
           <div>
@@ -328,6 +335,7 @@ export default function Home() {
           </div>
         </Reveal>
       </section>
+      <StarterSection />
       <section className="section container quickstart-section">
         <Reveal className="section-heading">
           <div>
@@ -361,6 +369,7 @@ export default function Home() {
           </Link>
         </div>
       </section>
+      <CommonQuestions />
       <CallToAction />
     </>
   );

@@ -1,0 +1,82 @@
+{
+  "tag": "v1.2.19",
+  "version": "1.2.19",
+  "publishedAt": "2026-10-10T12:31:05Z",
+  "releaseUrl": "https://github.com/NothingDNS/NothingDNS/releases/tag/v1.2.19",
+  "checksumsUrl": "https://github.com/NothingDNS/NothingDNS/releases/download/v1.2.19/SHA256SUMS",
+  "checkedAt": "2026-10-10T22:35:04.069Z",
+  "assets": [
+    {
+      "name": "dnsctl-darwin-amd64",
+      "url": "https://github.com/NothingDNS/NothingDNS/releases/download/v1.2.19/dnsctl-darwin-amd64",
+      "size": 7300880,
+      "sha256": "bfaae1695a40fd292d2f794022d8c99922519c7ca62d2727dd86160531555dce"
+    },
+    {
+      "name": "dnsctl-darwin-arm64",
+      "url": "https://github.com/NothingDNS/NothingDNS/releases/download/v1.2.19/dnsctl-darwin-arm64",
+      "size": 6758994,
+      "sha256": "ecbf0b9b75bf59ac6dfe0c1c16cd2761d612ed37b71a4fa910dda322cc0b320a"
+    },
+    {
+      "name": "dnsctl-linux-amd64",
+      "url": "https://github.com/NothingDNS/NothingDNS/releases/download/v1.2.19/dnsctl-linux-amd64",
+      "size": 7159970,
+      "sha256": "dbb26bcd6d65817a356900f3e46ad670babfaaf4d1328fba348139c25afd7825"
+    },
+    {
+      "name": "dnsctl-linux-arm64",
+      "url": "https://github.com/NothingDNS/NothingDNS/releases/download/v1.2.19/dnsctl-linux-arm64",
+      "size": 6684834,
+      "sha256": "13deb5486a0c07fdbe635951eb2b902c245159e6ef85feaf49817c76cea59d98"
+    },
+    {
+      "name": "dnsctl-windows-amd64.exe",
+      "url": "https://github.com/NothingDNS/NothingDNS/releases/download/v1.2.19/dnsctl-windows-amd64.exe",
+      "size": 7362048,
+      "sha256": "218e425adefac8d91dd586c2af8fcd5cb5ad877375ba43eff26dcb06865cc20a"
+    },
+    {
+      "name": "dnsctl-windows-arm64.exe",
+      "url": "https://github.com/NothingDNS/NothingDNS/releases/download/v1.2.19/dnsctl-windows-arm64.exe",
+      "size": 6683648,
+      "sha256": "8f5be160a8b690b7b17250ae8a1fdc8309f2b3a58cf32a12cb87c31c679ab185"
+    },
+    {
+      "name": "nothingdns-darwin-amd64",
+      "url": "https://github.com/NothingDNS/NothingDNS/releases/download/v1.2.19/nothingdns-darwin-amd64",
+      "size": 22719408,
+      "sha256": "da12d3279296c48ada869f8c545253b1c32b0ab8407bf0959a639d9d7a79356e"
+    },
+    {
+      "name": "nothingdns-darwin-arm64",
+      "url": "https://github.com/NothingDNS/NothingDNS/releases/download/v1.2.19/nothingdns-darwin-arm64",
+      "size": 21410146,
+      "sha256": "34071fc34b5d8799c8b331478c26b2406888b7dae5518d3286ba541e74c1e49f"
+    },
+    {
+      "name": "nothingdns-linux-amd64",
+      "url": "https://github.com/NothingDNS/NothingDNS/releases/download/v1.2.19/nothingdns-linux-amd64",
+      "size": 22085794,
+      "sha256": "3c23b8efdf27b92f52a78fe0950cada3839434269a50128af804471bb7bfb92e"
+    },
+    {
+      "name": "nothingdns-linux-arm64",
+      "url": "https://github.com/NothingDNS/NothingDNS/releases/download/v1.2.19/nothingdns-linux-arm64",
+      "size": 20709538,
+      "sha256": "05cf5408feded2142cba5ccd6674a3403c66361693fd286a07fcbd07b43db067"
+    },
+    {
+      "name": "nothingdns-windows-amd64.exe",
+      "url": "https://github.com/NothingDNS/NothingDNS/releases/download/v1.2.19/nothingdns-windows-amd64.exe",
+      "size": 22469120,
+      "sha256": "dde2dbac25c26b0aaff2e39df4bd2c708799be9b0972f7073907625c999f6f4f"
+    },
+    {
+      "name": "nothingdns-windows-arm64.exe",
+      "url": "https://github.com/NothingDNS/NothingDNS/releases/download/v1.2.19/nothingdns-windows-arm64.exe",
+      "size": 20752896,
+      "sha256": "c4f3c6555fc32d88ace815c1a67b040906d8a32b3cb2d88ee3e67d48d311aed1"
+    }
+  ]
+}
