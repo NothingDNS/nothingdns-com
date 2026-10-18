@@ -229,3 +229,27 @@ test("the frame limit follows a resize from desktop to mobile", () => {
   assert.equal(rendered.length, 3);
   loop.dispose();
 });
+
+test("slow frames expose real elapsed time separately from bounded physics", () => {
+  let callback;
+  const frames = [];
+  const loop = createSceneLoop(
+    {
+      request(next) {
+        callback = next;
+        return 1;
+      },
+      cancel() {},
+      render(dt, elapsed) {
+        frames.push({ dt, elapsed });
+      },
+    },
+    30,
+  );
+  loop.setActive(true);
+  callback(0);
+  callback(3000);
+  assert.equal(frames[1].dt, 0.065);
+  assert.equal(frames[1].elapsed, 3);
+  loop.dispose();
+});

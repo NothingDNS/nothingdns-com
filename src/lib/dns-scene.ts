@@ -310,13 +310,12 @@ export function drawDnsScene(
     const edge = smooth(Math.min(x, w - x, y, h - y) / (55 * u));
     if (!protectedArea) return edge;
     const a = protectedArea;
-    const outside = Math.max(
-      a.x - x,
-      x - a.x - a.width,
-      a.y - y,
-      y - a.y - a.height,
+    // A broad ellipse keeps copy quiet without a rectangular opacity boundary.
+    const distance = Math.hypot(
+      (x - a.x - a.width / 2) / Math.max(1, a.width * 0.75),
+      (y - a.y - a.height / 2) / Math.max(1, a.height * 0.9),
     );
-    return edge * (0.09 + 0.91 * smooth(outside / (65 * u)));
+    return edge * (0.12 + 0.88 * smooth((distance - 0.25) / 1.2));
   };
   const coreX = w * (mobile ? 0.6 : 0.78),
     coreY = h * (mobile ? 0.77 : 0.46);

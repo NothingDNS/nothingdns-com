@@ -10,7 +10,7 @@ import { navigation, REPO, SOURCE } from "@/lib/site";
 import { SiteSearch } from "./site-search";
 import { ThemePicker } from "./theme-picker";
 import { OxogStudio } from "./oxog-studio";
-import { BackgroundMotionToggle } from "./ambient-motion";
+import { BackgroundMotionToggle, HeaderMotionToggle } from "./ambient-motion";
 
 export function Header() {
   const pathname = usePathname().replace(/\/+$/, "") || "/";
@@ -103,6 +103,7 @@ export function Header() {
           <div className="header-actions">
             <SiteSearch onOpen={() => setOpen(false)} />
             <ThemePicker onOpen={() => setOpen(false)} />
+            <HeaderMotionToggle />
             <span className="header-divider" />
             <a
               href={REPO}

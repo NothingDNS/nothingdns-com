@@ -1,7 +1,7 @@
 type Scheduler = {
   request: (callback: (time: number) => void) => number;
   cancel: (id: number) => void;
-  render: (dt: number) => void;
+  render: (dt: number, elapsed: number) => void;
 };
 
 export function sceneCanAnimate(state: {
@@ -29,6 +29,7 @@ export function createSceneLoop(
     if (last === null || time - last >= 1000 / limit - 0.5) {
       scheduler.render(
         last === null ? 0 : Math.min((time - last) / 1000, 0.065),
+        last === null ? 0 : (time - last) / 1000,
       );
       last = time;
     }

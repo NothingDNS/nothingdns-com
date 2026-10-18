@@ -1,36 +1,65 @@
 body {
   isolation: isolate;
 }
-.site-background {
+.site-background,
+.site-interactions {
   --field-ink: #9caec6;
   position: fixed;
   inset: 0;
-  z-index: -1;
   overflow: hidden;
   pointer-events: none;
   user-select: none;
   contain: strict;
 }
-[data-theme="light"] .site-background {
+.site-background {
+  z-index: -1;
+}
+.site-interactions {
+  --field-ink: #bed4ef;
+  /* Root sibling of main/footer: section overflow, surfaces and transforms cannot clip it. */
+  z-index: 20;
+}
+main,
+.site-footer {
+  position: relative;
+  isolation: isolate;
+  z-index: 0;
+}
+[data-theme="light"] .site-background,
+[data-theme="light"] .site-interactions {
   --field-ink: #5c7190;
+}
+[data-theme="light"] .site-interactions {
+  --field-ink: #3c587c;
 }
 .ambient-field {
   display: block;
   width: 100%;
   height: 100%;
   color: var(--field-ink);
-  opacity: 0.4;
+  opacity: 0.48;
   /* Keep the reading column quiet; the field opens up in the margins. */
   mask-image: linear-gradient(90deg, #000, #0007 28%, #0007 72%, #000);
 }
+.field-effects {
+  display: block;
+  width: 100%;
+  height: 100%;
+  color: var(--field-ink);
+  opacity: 0.9;
+  /* Interactive effects have no content-shaped or horizontal masks. */
+}
 .ambient-field path,
-.ambient-field circle {
+.ambient-field circle,
+.field-effects path,
+.field-effects circle:where(:not(.field-halo-glow)) {
   fill: none;
   stroke: currentColor;
   stroke-width: 1;
   vector-effect: non-scaling-stroke;
 }
-.ambient-field .ambient-core {
+.ambient-field .ambient-core,
+.field-effects .ambient-core {
   fill: currentColor;
   stroke: none;
 }
@@ -45,12 +74,38 @@ body {
   transform-box: view-box;
 }
 .ambient-accent,
-.ambient-waves,
-.ambient-particles {
+.ambient-waves > g:nth-child(3) {
   color: var(--brand-active);
 }
+.field-effects path,
+.field-effects circle {
+  stroke-width: 1.35;
+}
+.field-effects .field-halo-glow {
+  stroke: none;
+}
+.field-cursor-ring {
+  opacity: 0.38;
+}
+.field-cursor-orbit {
+  opacity: 0.2;
+}
+.field-trails path {
+  stroke-linecap: round;
+}
+.field-relays path {
+  opacity: 0.45;
+  stroke-width: 1.1;
+}
+.field-relays circle {
+  fill: currentColor;
+  stroke: none;
+}
+.field-effects .field-resonance-ring {
+  stroke-width: 0.9;
+}
 .ambient-waves circle {
-  stroke-width: 1.2;
+  stroke-width: 1.6;
 }
 /* The shared field remains visible through full-width section surfaces. */
 .control-section,
@@ -83,6 +138,10 @@ body {
   .ambient-field circle {
     stroke-width: 1.5;
   }
+  .field-effects path,
+  .field-effects circle {
+    stroke-width: 1.8;
+  }
 }
 @media (max-width: 700px) {
   .ambient-field {
@@ -95,9 +154,21 @@ body {
   .ambient-links {
     display: none;
   }
-}
-@media (prefers-reduced-motion: reduce) {
-  .background-motion-control {
+  .field-effects {
+    opacity: 0.65;
+  }
+  .field-trails {
     display: none;
   }
+}
+/* No pre-hydration effects. A saved explicit opt-in can override the device default. */
+html:not([data-ambient-motion="on"]) .site-interactions {
+  visibility: hidden;
+}
+html:not([data-ambient-motion="on"]) .dns-network canvas {
+  transition: none;
+}
+html:not([data-ambient-motion="on"]) .technology-emblem > span,
+html:not([data-ambient-motion="on"]) .encryption-packet {
+  animation-play-state: paused;
 }

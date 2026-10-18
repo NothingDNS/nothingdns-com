@@ -1,6 +1,6 @@
 .hero.network-hero {
   isolation: isolate;
-  overflow: clip;
+  overflow: visible;
   width: 100%;
   max-width: none;
   margin: 0;
@@ -241,7 +241,6 @@
   .dns-network canvas {
     transition: none;
   }
-  .scene-motion-control,
   .scene-mouse-hint,
   .scene-touch-hint {
     display: none;

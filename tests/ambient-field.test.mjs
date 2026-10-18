@@ -35,7 +35,7 @@ test("pointer influence stays local, bounded, and returns gently to rest", () =>
     scene.step(1 / 60);
   }
   assert.ok(Math.hypot(near.dx, near.dy) > 0.5);
-  assert.ok(Math.hypot(near.dx, near.dy) < 25);
+  assert.ok(Math.hypot(near.dx, near.dy) < 130);
   assert.equal(far.dx, 0);
   assert.equal(far.dy, 0);
   scene.leave();
@@ -117,4 +117,150 @@ test("seeded geometry is deterministic and motion follows elapsed time", () => {
   a.move(100, 120);
   a.clearEffects();
   assert.equal(a.waves.length + a.particles.length + a.pointer.energy, 0);
+});
+
+test("scroll preserves the last viewport pointer position and its influence", () => {
+  const scene = new AmbientField(1440, 900);
+  scene.move(420, 330);
+  scene.setScroll(1200);
+  assert.deepEqual(scene.pointer, { x: 420, y: 330, energy: 1 });
+  scene.burst(420, 330);
+  assert.equal(scene.waves[0].x, scene.pointer.x);
+  assert.equal(scene.waves[0].y, scene.pointer.y);
+});
+
+test("near objects react visibly while distant objects remain undisturbed", () => {
+  const scene = new AmbientField(1440, 900);
+  const near = scene.nodes.find((n) => n.visible && n.depth === 1);
+  const far = scene.nodes.find(
+    (n) => n.visible && Math.hypot(n.x - near.x, n.y - near.y) > 600,
+  );
+  for (let i = 0; i < 60; i++) {
+    scene.move(near.x + 40, near.y);
+    scene.step(1 / 60);
+  }
+  assert.ok(
+    Math.hypot(near.dx, near.dy) > 25,
+    "nearby geometry should visibly bend around the cursor",
+  );
+  assert.ok(Math.hypot(near.dx, near.dy) < 130);
+  assert.equal(far.dx, 0);
+  assert.equal(far.dy, 0);
+});
+
+test("light trails stay bounded and all reactions expire after a slow frame", () => {
+  const scene = new AmbientField(1440, 900);
+  for (let i = 0; i < 500; i++) scene.move((i * 3) % 1400, (i * 11) % 850);
+  assert.equal(scene.trails.length, AMBIENT_FIELD.maxTrails);
+  scene.burst(400, 300);
+  scene.step(4);
+  assert.equal(
+    scene.waves.length + scene.particles.length + scene.trails.length,
+    0,
+  );
+  assert.ok(scene.pointer.energy < 0.001);
+  assert.ok(scene.nodes.every((n) => Number.isFinite(n.dx + n.dy)));
+});
+
+test("a click sends a strong, local wave through nearby geometry then settles", () => {
+  const scene = new AmbientField(1440, 900);
+  const node = scene.nodes.find((n) => n.visible && n.depth === 1 && n.x > 100);
+  scene.burst(node.x - 80, node.y);
+  advance(scene, 0.7);
+  assert.ok(Math.hypot(node.dx, node.dy) > 8);
+  assert.ok(node.activation > 0.01);
+  advance(scene, 6);
+  assert.ok(Math.hypot(node.dx, node.dy) < 0.01);
+  assert.ok(node.activation < 0.001);
+});
+
+test("fresh input during a slow frame is aged from its own event time", () => {
+  const scene = new AmbientField(1440, 900);
+  scene.burst(400, 300, 2.95);
+  scene.move(400, 300, 2.95);
+  scene.step(3);
+  assert.equal(scene.waves.length, 1);
+  assert.ok(Math.abs(scene.waves[0].age - 0.05) < 0.001);
+  assert.ok(scene.pointer.energy > 0.9);
+  assert.equal(scene.trails.length, 1);
+  advance(scene, 3);
+  assert.equal(
+    scene.waves.length + scene.particles.length + scene.trails.length,
+    0,
+  );
+});
+
+test("nearby objects circulate fluidly around the pointer rather than only pushing away", () => {
+  const scene = new AmbientField(1440, 900);
+  const node = scene.nodes.find(
+    (n, i) => n.visible && n.depth === 1 && i % 7 !== 0,
+  );
+  const center = { x: node.x - 85, y: node.y };
+  for (let i = 0; i < 180; i++) {
+    scene.move(center.x, center.y);
+    scene.step(1 / 60);
+  }
+  const sweptAngle = Math.atan2(
+    node.y + node.dy - center.y,
+    node.x + node.dx - center.x,
+  );
+  assert.ok(sweptAngle > 0.35, `expected an orbital sweep, got ${sweptAngle}`);
+  scene.leave();
+  advance(scene, 5);
+  assert.ok(Math.hypot(node.dx, node.dy) < 0.01);
+});
+
+test("clicks schedule delayed, attenuated reactions between nearby objects", () => {
+  const scene = new AmbientField(1440, 900);
+  const source = scene.nodes.find((n) => n.visible && n.x > 100);
+  scene.burst(source.x, source.y);
+  assert.ok(
+    Array.isArray(scene.relays) && scene.relays.some((r) => r.hop > 0),
+    "a click should create a bounded neighbor cascade",
+  );
+  const child = scene.relays.find((r) => r.hop === 1);
+  const parent = scene.relays.find((r) => r.to === child.from);
+  assert.equal(child.startAt, parent.arriveAt);
+  assert.ok(child.arriveAt > child.startAt);
+  assert.ok(child.energy < parent.energy);
+  advance(scene, 0.06);
+  assert.ok(scene.nodes[parent.to].resonance > 0);
+  assert.equal(scene.nodes[child.to].resonance, 0);
+  advance(scene, child.arriveAt - scene.time + 0.05);
+  assert.ok(scene.nodes[child.to].resonance > 0.05);
+  advance(scene, 4);
+  assert.equal(scene.relays.length, 0);
+  assert.ok(scene.nodes.every((n) => n.resonance < 0.001));
+});
+
+test("repeated clicks cannot amplify or grow a cascade without bounds", () => {
+  for (const width of [390, 1440, 3840]) {
+    const scene = new AmbientField(width, 900);
+    const limit = width < 700 ? 8 : AMBIENT_FIELD.maxRelays;
+    for (let i = 0; i < 180; i++) {
+      scene.burst(40 + ((i * 137) % (width - 80)), 40 + ((i * 83) % 800));
+      scene.step(1 / 60);
+      assert.ok(scene.relays.length <= limit);
+      assert.ok(scene.relays.every((r) => r.energy <= 0.82 && r.hop <= 2));
+      assert.equal(
+        new Set(scene.relays.map((r) => `${r.seed}:${r.to}`)).size,
+        scene.relays.length,
+      );
+      assert.ok(
+        scene.nodes.every(
+          (n) =>
+            Math.hypot(n.dx, n.dy) <=
+            AMBIENT_FIELD.maxDisplacement * scene.unit + 0.001,
+        ),
+      );
+    }
+    advance(scene, 3);
+    assert.equal(scene.relays.length, 0);
+    scene.burst(width / 2, 450);
+    scene.clearEffects();
+    assert.equal(scene.relays.length, 0);
+    assert.ok(
+      scene.nodes.every((n) => n.resonance === 0 && n.orbitPhase === 0),
+    );
+  }
 });

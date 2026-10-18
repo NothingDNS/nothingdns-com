@@ -46,6 +46,86 @@
   outline: 0.1875rem solid var(--accent-text);
   outline-offset: 0.1875rem;
 }
+.header-motion {
+  position: relative;
+  flex-shrink: 0;
+}
+.motion-trigger {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  min-width: 44px;
+  min-height: 44px;
+  border: 1px solid var(--line);
+  border-radius: 0.625rem;
+  background: var(--surface);
+  color: var(--muted);
+  transition:
+    color 0.18s,
+    border-color 0.18s,
+    background 0.18s;
+}
+.motion-trigger > svg {
+  width: 1.1875rem;
+  height: 1.1875rem;
+  opacity: 0.6;
+}
+.motion-trigger[aria-pressed="true"] {
+  color: var(--text);
+  border-color: var(--line-strong);
+}
+.motion-trigger[aria-pressed="true"] > svg {
+  opacity: 1;
+}
+.motion-trigger:hover {
+  color: var(--text);
+  border-color: var(--accent-text);
+  background: var(--surface-raised);
+}
+.motion-trigger:focus-visible {
+  outline: 0.1875rem solid var(--accent-text);
+  outline-offset: 0.1875rem;
+}
+.motion-status {
+  position: absolute;
+  right: 0.375rem;
+  bottom: 0.375rem;
+  width: 0.1875rem;
+  height: 0.1875rem;
+  border-radius: 50%;
+  background: currentColor;
+  visibility: hidden;
+}
+.motion-trigger[aria-pressed="true"] .motion-status {
+  visibility: visible;
+}
+.motion-tooltip {
+  position: absolute;
+  top: calc(100% + 0.625rem);
+  right: 0;
+  z-index: 6;
+  width: max-content;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--line-strong);
+  border-radius: 0.5rem;
+  color: var(--text);
+  background: var(--surface-raised);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  box-shadow: 0 0.5rem 1.5rem #0002;
+  visibility: hidden;
+  pointer-events: none;
+}
+.header-motion:focus-within .motion-tooltip {
+  visibility: visible;
+}
+@media (hover: hover) {
+  .header-motion:hover .motion-tooltip {
+    visibility: visible;
+  }
+}
 .theme-panel {
   position: absolute;
   top: calc(100% + 0.875rem);
@@ -258,7 +338,17 @@
     transition: none;
   }
 }
+@media (max-width: 1360px) {
+  body .header-cta {
+    display: none;
+  }
+}
 @media (max-width: 1100px) {
+  body .github-nav span,
+  body .github-nav > svg:last-child,
+  body .header-divider {
+    display: none;
+  }
   .theme-trigger > span,
   .theme-trigger .theme-chevron {
     display: none;
@@ -560,6 +650,6 @@
     gap: 0.25rem;
   }
   body .header-inner .brand svg {
-    width: clamp(7.75rem, 40vw, 10rem);
+    width: clamp(5.5rem, calc(100vw - 14.5rem), 10rem);
   }
 }

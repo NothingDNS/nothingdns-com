@@ -7,7 +7,6 @@ import {
   DNS_SCENE,
   DnsScene,
   drawDnsScene,
-  isSceneTap,
   type Area,
 } from "@/lib/dns-scene";
 import { createSceneLoop, sceneCanAnimate } from "@/lib/scene-loop";
@@ -15,8 +14,7 @@ import { useAmbientMotion } from "./ambient-motion";
 
 export function HeroNetwork() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const controller = useRef<{ pause: (value: boolean) => void } | null>(null);
-  const { paused, toggle } = useAmbientMotion();
+  const { paused, ready, toggle } = useAmbientMotion();
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -24,22 +22,13 @@ export function HeroNetwork() {
     const ctx = canvas?.getContext("2d", { alpha: true });
     if (!canvas || !hero || !ctx) return;
     const scene = new DnsScene(hero.clientWidth, hero.clientHeight);
-    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)");
-    let visible = false,
-      userPaused = false,
+    let visible = paused,
       disposed = false;
     let protectedArea: Area | null = null;
     let palette =
       DNS_SCENE.palettes[
         document.documentElement.dataset.theme === "light" ? "light" : "dark"
       ];
-    let tap: {
-      x: number;
-      y: number;
-      time: number;
-      id: number;
-      blocked: boolean;
-    } | null = null;
     const paint = () => {
       if (disposed) return;
       drawDnsScene(
@@ -47,7 +36,7 @@ export function HeroNetwork() {
         scene,
         palette,
         protectedArea,
-        reduced.matches || userPaused,
+        true, // Pointer reactions live in the shared, unmasked SVG overlay.
       );
       canvas.style.opacity = "1";
     };
@@ -69,23 +58,15 @@ export function HeroNetwork() {
       const active = sceneCanAnimate({
         visible,
         hidden: document.hidden,
-        reduced: reduced.matches,
-        paused: userPaused,
+        reduced: false, // The shared preference includes the reduced-motion default.
+        paused,
       });
       loop.setActive(active);
       if (!active) {
         scene.leave();
-        tap = null;
       }
       if (visible && !document.hidden && !active) paint();
     }
-    controller.current = {
-      pause(value) {
-        userPaused = value;
-        scene.clearEffects();
-        updateActivity();
-      },
-    };
     function resize() {
       if (disposed) return;
       const rect = canvas!.getBoundingClientRect();
@@ -114,89 +95,20 @@ export function HeroNetwork() {
         : null;
       if (!document.hidden) paint();
     }
-    const interactive = (target: EventTarget | null) =>
-      target instanceof Element &&
-      Boolean(
-        target.closest(
-          "a,button,input,select,textarea,summary,h1,p,[role='button'],[role='dialog'],[data-no-scene]",
-        ),
-      );
-    const coordinates = (event: PointerEvent) => {
-      const rect = canvas!.getBoundingClientRect();
-      return {
-        x:
-          ((event.clientX - rect.left) * scene.width) / Math.max(1, rect.width),
-        y:
-          ((event.clientY - rect.top) * scene.height) /
-          Math.max(1, rect.height),
-      };
-    };
-    const enabled = () =>
-      visible && !document.hidden && !reduced.matches && !userPaused;
-    function pointerMove(event: PointerEvent) {
-      if (!enabled()) return;
-      const point = coordinates(event);
-      if (
-        tap &&
-        tap.id === event.pointerId &&
-        Math.hypot(event.clientX - tap.x, event.clientY - tap.y) > 9
-      )
-        tap.blocked = true;
-      if (event.pointerType === "mouse") scene.move(point.x, point.y);
-    }
-    function pointerDown(event: PointerEvent) {
-      if (!enabled() || !event.isPrimary || event.button !== 0) return;
-      tap = {
-        x: event.clientX,
-        y: event.clientY,
-        time: event.timeStamp,
-        id: event.pointerId,
-        blocked: interactive(event.target),
-      };
-    }
-    function pointerUp(event: PointerEvent) {
-      const start = tap;
-      tap = null;
-      if (
-        !start ||
-        start.id !== event.pointerId ||
-        start.blocked ||
-        interactive(event.target) ||
-        !enabled()
-      )
-        return;
-      if (
-        !isSceneTap(start, {
-          x: event.clientX,
-          y: event.clientY,
-          time: event.timeStamp,
-        }) ||
-        window.getSelection()?.isCollapsed === false
-      )
-        return;
-      const point = coordinates(event);
-      scene.burst(point.x, point.y);
-    }
-    function leave() {
-      scene.leave();
-      tap = null;
-    }
-    function motionChange() {
-      scene.clearEffects();
-      updateActivity();
-    }
     const resizeObserver = new ResizeObserver(resize);
     resizeObserver.observe(hero);
     const copy = hero.querySelector(".hero-copy");
     if (copy) resizeObserver.observe(copy);
-    const intersection = new IntersectionObserver(
-      ([entry]) => {
-        visible = entry.isIntersecting;
-        updateActivity();
-      },
-      { threshold: 0 },
-    );
-    intersection.observe(hero);
+    const intersection = paused
+      ? null
+      : new IntersectionObserver(
+          ([entry]) => {
+            visible = entry.isIntersecting;
+            updateActivity();
+          },
+          { threshold: 0 },
+        );
+    intersection?.observe(hero);
     const themeObserver = new MutationObserver(() => {
       palette =
         DNS_SCENE.palettes[
@@ -208,35 +120,21 @@ export function HeroNetwork() {
       attributes: true,
       attributeFilter: ["data-theme"],
     });
-    hero.addEventListener("pointermove", pointerMove, { passive: true });
-    hero.addEventListener("pointerdown", pointerDown, { passive: true });
-    hero.addEventListener("pointerup", pointerUp, { passive: true });
-    hero.addEventListener("pointerleave", leave, { passive: true });
-    hero.addEventListener("pointercancel", leave, { passive: true });
-    reduced.addEventListener("change", motionChange);
-    document.addEventListener("visibilitychange", updateActivity);
-    window.addEventListener("resize", resize, { passive: true });
+    if (!paused) {
+      document.addEventListener("visibilitychange", updateActivity);
+      window.addEventListener("resize", resize, { passive: true });
+    }
     resize();
     return () => {
       disposed = true;
-      controller.current = null;
+      scene.clearEffects();
       loop.dispose();
       resizeObserver.disconnect();
-      intersection.disconnect();
+      intersection?.disconnect();
       themeObserver.disconnect();
-      hero.removeEventListener("pointermove", pointerMove);
-      hero.removeEventListener("pointerdown", pointerDown);
-      hero.removeEventListener("pointerup", pointerUp);
-      hero.removeEventListener("pointerleave", leave);
-      hero.removeEventListener("pointercancel", leave);
-      reduced.removeEventListener("change", motionChange);
       document.removeEventListener("visibilitychange", updateActivity);
       window.removeEventListener("resize", resize);
     };
-  }, []);
-
-  useEffect(() => {
-    controller.current?.pause(paused);
   }, [paused]);
 
   return (
@@ -250,7 +148,8 @@ export function HeroNetwork() {
         aria-label={
           paused ? "Resume network animation" : "Pause network animation"
         }
-        aria-pressed={paused}
+        aria-pressed={!paused}
+        disabled={!ready}
         onClick={toggle}
       >
         {paused ? <Play size={13} /> : <Pause size={13} />}
