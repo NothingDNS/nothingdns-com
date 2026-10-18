@@ -401,122 +401,6 @@ h4 {
 .hero-fineprint svg {
   color: var(--accent-text);
 }
-.hero-visual {
-  position: absolute;
-  width: 55%;
-  aspect-ratio: 1;
-  top: 2.125rem;
-  right: -2.125rem;
-}
-.globe-scene {
-  position: relative;
-  width: 100%;
-  height: 100%;
-}
-.globe-scene canvas {
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  top: 0;
-  left: 0;
-}
-.globe-grid {
-  position: absolute;
-  inset: 6% 3%;
-  background-image:
-    linear-gradient(var(--line) 0.0625rem, transparent 0.0625rem),
-    linear-gradient(90deg, var(--line) 0.0625rem, transparent 0.0625rem);
-  background-size: 3.375rem 3.375rem;
-  mask-image: radial-gradient(ellipse at center, #0007, transparent 67%);
-}
-.globe-cross {
-  position: absolute;
-  color: var(--subtle);
-  font-family: monospace;
-  font-size: 1.375rem;
-  font-weight: 300;
-}
-.cross-one {
-  left: 18%;
-  top: 15%;
-}
-.cross-two {
-  right: 14%;
-  bottom: 16%;
-}
-.globe-label {
-  position: absolute;
-  font-family: var(--font-mono), monospace;
-  font-size: 0.5rem;
-  color: var(--muted);
-  letter-spacing: 0.12em;
-}
-.label-top {
-  display: flex;
-  align-items: center;
-  gap: 0.5625rem;
-  top: 13%;
-  right: 14%;
-}
-.globe-tag {
-  position: absolute;
-  top: 58%;
-  right: 5%;
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  padding: 0.8125rem 0.9375rem 0.8125rem 0.75rem;
-  background: var(--header);
-  border: 0.0625rem solid var(--line-strong);
-  backdrop-filter: blur(0.875rem);
-  border-radius: 0.375rem;
-  box-shadow: 0 0.75rem 2.5rem #0002;
-  animation: float 7s ease-in-out infinite;
-}
-.globe-tag-icon {
-  color: var(--accent-text);
-  display: grid;
-  place-items: center;
-  width: 2rem;
-  height: 2rem;
-  background: var(--accent-faint);
-  border-radius: 0.25rem;
-}
-.globe-tag span.mono {
-  display: block;
-  color: var(--muted);
-  font-size: 0.4375rem;
-  margin-bottom: 0.25rem;
-}
-.globe-tag strong {
-  font-size: 0.6875rem;
-  font-weight: 500;
-}
-.globe-tag-check {
-  color: var(--accent-text);
-  font-size: 1.1875rem;
-  margin-left: 0.3125rem;
-}
-.globe-coordinate {
-  position: absolute;
-  left: 20%;
-  bottom: 15%;
-  color: var(--subtle);
-  font-size: 0.4375rem;
-}
-.globe-caption {
-  position: absolute;
-  left: 20%;
-  bottom: 10%;
-  font-size: 0.625rem;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  color: var(--muted);
-}
-.globe-caption svg {
-  color: var(--accent-text);
-}
 .hero-bottom {
   position: absolute;
   display: flex;
@@ -2572,15 +2456,6 @@ h2 {
 }
 .not-found .button-row {
   justify-content: center;
-}
-@keyframes float {
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-0.5625rem);
-  }
 }
 @keyframes packet {
   from {

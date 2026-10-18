@@ -23,7 +23,7 @@ The static preview runs at http://127.0.0.1:3002.
 
 ## Pages
 
-- `/` — product story, animated network globe, interactive dashboard preview, platform-specific installation
+- `/` — product story, interactive DNS hero background, interactive dashboard preview, platform-specific installation
 - `/technology` — interactive query path, encrypted transports, policy, resilience, management
 - `/docs` — quick start, with five additional guide routes: configuration, encrypted-dns, zones, management, deployment
 - `/open-source` — project principles, contribution paths, MIT license, releases
@@ -33,7 +33,11 @@ The static preview runs at http://127.0.0.1:3002.
 
 ## Design & behavior
 
-The appearance picker provides Light, Dark, and System preview cards, matching the control on cobaltdb.dev. The default follows the device; existing saved preferences are preserved by next-themes. Native radio controls support arrow keys and immediate preview, Escape restores trigger focus, and leaving the panel dismisses it. Preferences persist across navigation and reloads. All animations respect reduced-motion preferences. The globe suspends rendering when offscreen or the browser is hidden. Navigation, mobile menu, platform tabs, copy actions, query filtering, policy switch, and documentation search are functional. No analytics or third-party tracking is included.
+The appearance picker provides Light, Dark, and System preview cards, matching the control on cobaltdb.dev. The default follows the device; existing saved preferences are preserved by next-themes. Native radio controls support arrow keys and immediate preview, Escape restores trigger focus, and leaving the panel dismisses it. Preferences persist across navigation and reloads. All animations respect reduced-motion preferences. Navigation, mobile menu, platform tabs, copy actions, query filtering, policy switch, and documentation search are functional. No analytics or third-party tracking is included.
+
+The full-width hero uses a Canvas 2D DNS topology with moving query lanes, root/TLD/zone/cache nodes, local pointer influence, and bounded query/answer/DNSSEC click pulses. Touch swipes, text selection, and controls do not trigger pulses. Effects expire, nearby rapid clicks merge, and a pause control provides a calm frame. `prefers-reduced-motion` renders a still illustration without a frame loop. Offscreen and hidden scenes cancel RAF; resuming resets the clock. Mobile scenes have fewer nodes and a lower frame limit; canvas resolution is capped at DPR 2 and five million pixels. Configuration is centralized in `src/lib/dns-scene.ts`; `pnpm test` covers effect limits, expiry, local influence, tap filtering, resolution budgets, refresh rates, and frame suspension.
+
+`SiteBackground` adds one continuous, viewport-sized SVG field across every route, behind the content. Seeded orbital, packet, circuit, and geometric objects drift at three depths with restrained scroll parallax; only nearby objects respond to the pointer. Blank-area taps create at most four local waves and 32 particles, all expiring within 2.4 seconds. Controls, editable content, selections, swipes, and the hero's separate interaction area are excluded. The fixed SVG has a bounded element count regardless of document length, uses direct SVG attribute updates rather than React frame state, and reuses the shared RAF scheduler. Offscreen objects stop their individual clocks; the entire loop stops when hidden, outside the viewport, paused, or under reduced motion. Mobile uses 12 objects at 24 FPS; desktop uses 32–48 at 30 FPS. Theme colors follow CSS variables. The hero and footer motion controls pause both ambient scenes and persist across client navigation. Geometry and effect limits live in `src/lib/ambient-field.ts`, with integration and readability styles in `src/app/site-background.css`.
 
 Every footer includes the OXOGNET studio section with its original pink/purple SVG symbol, staggered drawing animation on first entry into view, ecosystem links, and studio signature. Reduced motion displays the complete symbol immediately. This shared identity is adapted from the CobaltDB website; its MIT notice is retained in `THIRD_PARTY_NOTICES.md`.
 
@@ -49,7 +53,7 @@ Dashboard charts, metrics, queries, and zones are **illustrative sample data**, 
 
 `src/lib/project-release.json` is a checked release snapshot with 12 binary assets and their published SHA-256 values. Run `pnpm project:sync` to refresh it from GitHub; builds use the saved snapshot and make no release API calls. The refresh validates the tag, target coverage, asset URLs, and checksum records before replacing the file. Review upstream changes alongside a refresh. The configuration studio generates local development recipes in the browser. All three default recipes passed `-validate-config` using the official v1.2.19 Windows binary after SHA-256 verification; this checks configuration validity without starting a DNS listener. Use the generated validation command on your own installation. `pnpm test` checks recipe behavior and invalid-port rejection; GitHub Pages CI runs these tests before building.
 
-Metadata includes social previews, a custom favicon, sitemap, robots configuration, and a DNS-themed 404 page. The canonical origin is `https://nothingdns.com`; adjust `src/lib/site.ts` when using a different production domain.
+Metadata includes social previews, a custom favicon, sitemap, robots configuration, and a DNS-themed 404 page. `public/og.png` is the 1200×630 Open Graph and Twitter card, generated from the shared SVG wordmark and a vector network globe by `scripts/generate-social-image.mjs`. Run `pnpm brand:generate` to refresh it; development and production builds do this automatically. The previous `/opengraph-image/nothingdns.png` URL serves the same image for existing shares. The canonical origin is `https://nothingdns.com`; adjust `src/lib/site.ts` when using a different production domain.
 
 ## Deployment
 

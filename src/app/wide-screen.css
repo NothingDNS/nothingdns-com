@@ -61,9 +61,6 @@
   body .hero-announcement,
   body .eyebrow,
   body .hero-fineprint,
-  body .globe-label,
-  body .globe-caption,
-  body .globe-tag strong,
   body .install-footnote,
   body .quickstart-bottom,
   body .tech-note,
@@ -75,8 +72,6 @@
   }
 
   body .hero-bottom,
-  body .globe-coordinate,
-  body .globe-tag span.mono,
   body .card-index,
   body .protocol-badge,
   body .trust-strip .trust-intro,

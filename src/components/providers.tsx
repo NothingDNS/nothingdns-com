@@ -2,6 +2,7 @@
 
 import { ThemeProvider } from "next-themes";
 import { MotionConfig } from "motion/react";
+import { AmbientMotionProvider } from "./ambient-motion";
 
 export function Providers({ children }: { children: React.ReactNode }) {
   return (
@@ -11,7 +12,9 @@ export function Providers({ children }: { children: React.ReactNode }) {
       enableSystem
       disableTransitionOnChange
     >
-      <MotionConfig reducedMotion="user">{children}</MotionConfig>
+      <MotionConfig reducedMotion="user">
+        <AmbientMotionProvider>{children}</AmbientMotionProvider>
+      </MotionConfig>
     </ThemeProvider>
   );
 }

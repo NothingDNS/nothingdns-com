@@ -2,10 +2,13 @@ import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { Providers } from "@/components/providers";
 import { Footer, Header } from "@/components/shell";
+import { SiteBackground } from "@/components/site-background";
 import { SITE_URL } from "@/lib/site";
 import "./globals.css";
 import "./enhancements.css";
 import "./appearance.css";
+import "./hero-network.css";
+import "./site-background.css";
 
 const geist = Geist({
   subsets: ["latin"],
@@ -32,8 +35,19 @@ export const metadata: Metadata = {
     siteName: "NothingDNS",
     type: "website",
     locale: "en_US",
+    images: [
+      {
+        url: "/og.png",
+        width: 1200,
+        height: 630,
+        alt: "NothingDNS — Less noise. More network.",
+      },
+    ],
   },
-  twitter: { card: "summary_large_image" },
+  twitter: {
+    card: "summary_large_image",
+    images: [{ url: "/og.png", alt: "NothingDNS — Less noise. More network." }],
+  },
 };
 export const viewport: Viewport = {
   themeColor: [
@@ -49,6 +63,7 @@ export default function RootLayout({
     <html lang="en" data-scroll-behavior="smooth" suppressHydrationWarning>
       <body className={`${geist.variable} ${mono.variable}`}>
         <Providers>
+          <SiteBackground />
           <a href="#main" className="skip-link">
             Skip to content
           </a>

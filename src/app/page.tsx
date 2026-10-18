@@ -16,7 +16,7 @@ import {
   Terminal,
   Waypoints,
 } from "lucide-react";
-import { NetworkGlobe } from "@/components/globe";
+import { HeroNetwork } from "@/components/hero-network";
 import { DashboardDemo } from "@/components/dashboard-demo";
 import { ArrowLink, Eyebrow, Reveal } from "@/components/ui";
 import { InstallBox } from "@/components/install";
@@ -35,61 +35,77 @@ export const metadata: Metadata = { alternates: { canonical: "/" } };
 export default function Home() {
   return (
     <>
-      <section className="hero container">
-        <div className="hero-copy">
-          <Reveal>
-            <Link href="/download" className="hero-announcement">
-              <span className="small-dot" />
-              <span>{projectRelease.tag} · OPEN POSSIBILITIES.</span>
-              <ArrowUpRight size={13} />
-            </Link>
-            <h1>
-              Less noise.
-              <br />
-              More <span className="hero-serif">network.</span>
-            </h1>
-            <p className="hero-description">
-              A powerful DNS server. A quieter internet.
-              <br />
-              Secure, shape, and own your network with one
-              <br className="desktop-break" /> self-contained, open-source
-              binary.
-            </p>
-            <div className="button-row">
-              <Link href="/docs" className="button">
-                Take control
-                <ArrowUpRight size={18} />
+      <section className="hero network-hero" data-dns-hero>
+        <HeroNetwork />
+        <div className="container hero-layout">
+          <div className="hero-copy">
+            <Reveal>
+              <Link href="/download" className="hero-announcement">
+                <span className="small-dot" />
+                <span>{projectRelease.tag} · OPEN POSSIBILITIES.</span>
+                <ArrowUpRight size={13} />
               </Link>
-              <a
-                href={REPO}
-                className="button button-secondary"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <GitHubIcon size={18} />
-                View on GitHub
-              </a>
-            </div>
-            <div className="hero-fineprint">
-              <span>
-                <Check size={13} />
-                Self-hosted
-              </span>
-              <span>
-                <Check size={13} />
-                No subscriptions
-              </span>
-              <span>
-                <Check size={13} />
-                MIT licensed
-              </span>
-            </div>
-          </Reveal>
+              <h1>
+                Less noise.
+                <br />
+                More <span className="hero-serif">network.</span>
+              </h1>
+              <p className="hero-description">
+                A powerful DNS server. A quieter internet.
+                <br />
+                Secure, shape, and own your network with one
+                <br className="desktop-break" /> self-contained, open-source
+                binary.
+              </p>
+              <div className="button-row">
+                <Link href="/docs" className="button">
+                  Take control
+                  <ArrowUpRight size={18} />
+                </Link>
+                <a
+                  href={REPO}
+                  className="button button-secondary"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <GitHubIcon size={18} />
+                  View on GitHub
+                </a>
+              </div>
+              <div className="hero-fineprint">
+                <span>
+                  <Check size={13} />
+                  Self-hosted
+                </span>
+                <span>
+                  <Check size={13} />
+                  No subscriptions
+                </span>
+                <span>
+                  <Check size={13} />
+                  MIT licensed
+                </span>
+              </div>
+            </Reveal>
+          </div>
         </div>
-        <Reveal className="hero-visual" delay={0.1}>
-          <NetworkGlobe />
-        </Reveal>
-        <div className="hero-bottom mono">
+        <div className="hero-network-caption" aria-hidden="true">
+          <span className="network-caption-label">
+            <span className="small-dot" />
+            ENCRYPTED BY DESIGN
+          </span>
+          <div className="network-caption-bottom">
+            <span>QUERY → VALIDATE → ANSWER</span>
+            <p>Every query. Your rules.</p>
+            <small className="scene-mouse-hint">
+              Move to connect. Click to resolve.
+            </small>
+            <small className="scene-touch-hint">
+              Tap the network to send a query.
+            </small>
+          </div>
+        </div>
+        <div className="container hero-bottom mono">
           <a href="#built-different">
             SCROLL TO DISCOVER
             <ArrowDown size={13} />

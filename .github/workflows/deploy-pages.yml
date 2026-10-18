@@ -55,7 +55,7 @@ jobs:
       - name: Typecheck
         run: pnpm typecheck
 
-      - name: Test configuration recipes
+      - name: Test configuration and animation behavior
         run: pnpm test
 
       - name: Build static site
@@ -68,7 +68,9 @@ jobs:
           test -f out/index.html
           test -f out/404.html
           test -f out/docs/configuration/index.html
+          test -f out/og.png
           test -f out/opengraph-image/nothingdns.png
+          cmp -s out/og.png out/opengraph-image/nothingdns.png
 
       - name: Upload GitHub Pages artifact
         uses: actions/upload-pages-artifact@v5

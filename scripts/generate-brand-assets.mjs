@@ -58,3 +58,4 @@ for (const [name, source] of Object.entries(assets)) {
 }
 await writeFile(new URL("src/app/icon.svg", root), avatar(64));
 console.log(`Generated ${Object.keys(assets).length} brand SVGs and the favicon.`);
+await import("./generate-social-image.mjs");

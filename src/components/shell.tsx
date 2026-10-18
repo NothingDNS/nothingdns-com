@@ -10,6 +10,7 @@ import { navigation, REPO, SOURCE } from "@/lib/site";
 import { SiteSearch } from "./site-search";
 import { ThemePicker } from "./theme-picker";
 import { OxogStudio } from "./oxog-studio";
+import { BackgroundMotionToggle } from "./ambient-motion";
 
 export function Header() {
   const pathname = usePathname().replace(/\/+$/, "") || "/";
@@ -197,6 +198,7 @@ export function Footer() {
             <span className="footer-license mono">
               OPEN SOURCE · MIT LICENSE
             </span>
+            <BackgroundMotionToggle />
           </div>
           <div className="footer-links">
             <div>
