@@ -1,96 +1,36 @@
+import { Manrope, Space_Grotesk } from "next/font/google";
 import { ArrowUpRight } from "lucide-react";
 import { OxogMark } from "./oxog-mark";
 
-const projects = [
-  {
-    name: "AGEZT",
-    description: "An agentic operating system",
-    href: "https://oxog.net/projects/agezt",
-  },
-  {
-    name: "WrongStack",
-    description: "AI coding orchestration",
-    href: "https://oxog.net/projects/wrongstack",
-  },
-  {
-    name: "WrongTrace",
-    description: "Agent observability",
-    href: "https://oxog.net/projects/wrongtrace",
-  },
-  {
-    name: "NineDeploy",
-    description: "Self-hosted deployment",
-    href: "https://oxog.net/projects/ninedeploy",
-  },
-];
+const body = Manrope({
+  subsets: ["latin"],
+  variable: "--font-oxog-body",
+  display: "swap",
+});
+const display = Space_Grotesk({
+  subsets: ["latin"],
+  variable: "--font-oxog-display",
+  display: "swap",
+});
 
-// Shared OXOGNET identity from cobaltdb/cobaltdb-site; see THIRD_PARTY_NOTICES.md.
+// Shared OXOG footer from mammothengine.com; see THIRD_PARTY_NOTICES.md.
 export function OxogStudio() {
   return (
-    <section
-      className="oxog-studio-section"
-      aria-labelledby="oxog-studio-heading"
+    <a
+      className={["oxog-studio", body.variable, display.variable].join(" ")}
+      href="https://oxog.net"
     >
-      <div className="oxog-studio-card">
-        <a
-          className="oxog-studio-logo-link"
-          href="https://oxog.net/"
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label="Visit OXOGNET"
-        >
-          <OxogMark />
-        </a>
-        <div className="oxog-studio-copy">
-          <span className="eyebrow">THE PEOPLE BEHIND THE ENGINE</span>
-          <p>NothingDNS is built and maintained by</p>
-          <h2 id="oxog-studio-heading">
-            <a
-              href="https://oxog.net/"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              oxog<span>net</span>
-              <span className="oxog-studio-dot">.</span>
-              <ArrowUpRight size={22} />
-            </a>
-          </h2>
-          <p>
-            An independent studio in Estonia building AI agents, developer tools
-            and the infrastructure behind them. A shared curiosity. A whole
-            ecosystem of ideas.
-          </p>
-          <a
-            className="oxog-studio-explore"
-            href="https://oxog.net/projects"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Explore the OXOGNET ecosystem
-            <ArrowUpRight size={14} />
-          </a>
-        </div>
-        <nav className="oxog-studio-projects" aria-label="More from OXOGNET">
-          {projects.map((project) => (
-            <a
-              key={project.name}
-              href={project.href}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <span>
-                <strong>{project.name}</strong>
-                <small>{project.description}</small>
-              </span>
-              <ArrowUpRight size={14} />
-            </a>
-          ))}
-        </nav>
+      <OxogMark />
+      <div>
+        <span className="eyebrow">PART OF A BIGGER PICTURE</span>
+        <h2>
+          Small studio. <span>Big ideas.</span>
+        </h2>
+        <p>Explore the tools and infrastructure from Oxog.</p>
       </div>
-      <div className="oxog-studio-signature">
-        <span>OXOGNET OÜ</span>
-        <span>Made in Estonia. Built for the world.</span>
-      </div>
-    </section>
+      <span className="oxog-studio-link">
+        Meet oxog.net <ArrowUpRight size={18} aria-hidden="true" />
+      </span>
+    </a>
   );
 }

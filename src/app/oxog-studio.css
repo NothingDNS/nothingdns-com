@@ -1,0 +1,156 @@
+/* The compact OXOG footer from mammothengine.com, scoped to this shared band. */
+.oxog-studio {
+  --oxog-pink: #ed0878;
+  --oxog-purple: #b477e4;
+  --studio-text: #f6f0e4;
+  --studio-muted: #b5b2b9;
+  --studio-accent: #e7d2a4;
+  --studio-line: #373b50;
+  display: flex;
+  align-items: center;
+  gap: clamp(1.875rem, 4vw, 4.375rem);
+  padding: 2.1875rem 2.8125rem;
+  border: 1px solid var(--studio-line);
+  border-radius: 0.4375rem;
+  background: radial-gradient(at 15% 30%, #ed08780a, transparent 65%);
+  color: var(--studio-text);
+  font-family: var(--font-oxog-body), sans-serif;
+  font-size: 0.9375rem;
+  font-weight: 400;
+  line-height: 1.7;
+}
+[data-theme="light"] .oxog-studio {
+  --oxog-purple: #692d91;
+  --studio-text: #191c32;
+  --studio-muted: #65605a;
+  --studio-accent: #333957;
+  --studio-line: #ded4c2;
+}
+.oxog-mark {
+  display: block;
+  width: 6.5625rem;
+  height: auto;
+  flex-shrink: 0;
+}
+.oxog-studio .eyebrow {
+  display: block;
+  margin: 0 0 0.5625rem;
+  color: var(--studio-accent);
+  font:
+    0.5rem/1.6 SFMono-Regular,
+    Consolas,
+    "Liberation Mono",
+    monospace;
+  letter-spacing: 0.12em;
+}
+.oxog-studio h2 {
+  margin: 0;
+  color: var(--studio-text);
+  font-family: var(--font-oxog-display), sans-serif;
+  font-size: 2.1875rem;
+  font-weight: 500;
+  line-height: 1.12;
+  letter-spacing: -0.045em;
+}
+.oxog-studio h2 > span {
+  color: var(--studio-muted);
+}
+.oxog-studio p {
+  margin: 0.5625rem 0 0;
+  color: var(--studio-muted);
+  font-size: 0.6875rem;
+  line-height: 1.7;
+}
+.oxog-studio-link {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  margin-left: auto;
+  white-space: nowrap;
+  color: var(--studio-accent);
+  font-size: 0.75rem;
+}
+.oxog-studio-link svg {
+  width: 1.125rem;
+  height: 1.125rem;
+}
+.oxog-studio:hover {
+  border-color: #ed0878;
+}
+.oxog-studio:focus-visible {
+  outline: 2px solid #ed0878;
+  outline-offset: 4px;
+}
+.oxog-studio + .footer-bottom {
+  border-top: 0;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .oxog-mark[data-motion="drawing"] path {
+    stroke-dasharray: 400;
+    animation: oxog-draw 6s ease-in-out var(--draw-delay, 0s) infinite;
+  }
+}
+.oxog-mark path:nth-child(2) {
+  --draw-delay: 0.15s;
+}
+.oxog-mark path:nth-child(3) {
+  --draw-delay: 0.3s;
+}
+.oxog-mark path:nth-child(4) {
+  --draw-delay: 0.45s;
+}
+@keyframes oxog-draw {
+  0% {
+    stroke-dashoffset: 400px;
+  }
+  33%,
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+@media (max-width: 1100px) {
+  .oxog-studio {
+    gap: 1.875rem;
+    padding: 1.875rem;
+  }
+  .oxog-studio h2 {
+    font-size: 1.8125rem;
+  }
+}
+@media (max-width: 800px) {
+  .oxog-studio {
+    flex-wrap: wrap;
+  }
+  .oxog-studio-link {
+    justify-content: flex-end;
+    width: 100%;
+    margin: 0;
+  }
+}
+@media (max-width: 520px) {
+  .oxog-studio {
+    gap: 1.375rem;
+    padding: 1.5625rem;
+  }
+  .oxog-studio .oxog-mark {
+    width: 4.0625rem;
+  }
+  .oxog-studio > div {
+    flex: 1;
+  }
+  .oxog-studio .eyebrow {
+    font-size: 0.375rem;
+  }
+  .oxog-studio h2 {
+    font-size: 1.5625rem;
+  }
+  .oxog-studio h2 > span {
+    display: block;
+  }
+  .oxog-studio p {
+    font-size: 0.5625rem;
+  }
+  .oxog-studio-link {
+    font-size: 0.625rem;
+  }
+}

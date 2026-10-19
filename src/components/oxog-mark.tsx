@@ -1,33 +1,36 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import { useAmbientMotion } from "./ambient-motion";
 
 // Adapted from cobaltdb/cobaltdb-site. See THIRD_PARTY_NOTICES.md.
 export function OxogMark() {
   const ref = useRef<SVGSVGElement>(null);
+  const { paused } = useAmbientMotion();
   useEffect(() => {
     const symbol = ref.current;
-    if (
-      !symbol ||
-      window.matchMedia("(prefers-reduced-motion: reduce)").matches ||
-      !("IntersectionObserver" in window)
-    )
-      return;
-    symbol.dataset.motion = "waiting";
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (!entries.some((entry) => entry.isIntersecting)) return;
-        symbol.dataset.motion = "drawing";
-        observer.disconnect();
-      },
-      { rootMargin: "0px 0px -80px 0px" },
-    );
-    observer.observe(symbol);
+    if (!symbol) return;
+    symbol.dataset.motion = "still";
+    if (paused) return;
+    let visible = !("IntersectionObserver" in window);
+    const update = () => {
+      symbol.dataset.motion = visible && !document.hidden ? "drawing" : "still";
+    };
+    const observer = visible
+      ? null
+      : new IntersectionObserver(([entry]) => {
+          visible = entry.isIntersecting;
+          update();
+        });
+    observer?.observe(symbol);
+    document.addEventListener("visibilitychange", update);
+    update();
     return () => {
-      observer.disconnect();
+      observer?.disconnect();
+      document.removeEventListener("visibilitychange", update);
       delete symbol.dataset.motion;
     };
-  }, []);
+  }, [paused]);
 
   return (
     <svg
@@ -35,7 +38,8 @@ export function OxogMark() {
       viewBox="0 0 200 130"
       fill="none"
       aria-hidden="true"
-      className="oxog-studio-symbol"
+      focusable="false"
+      className="oxog-mark"
     >
       <path
         d="M93 56 72 35C49 13 14 24 9 53 3 84 23 104 46 103"

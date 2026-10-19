@@ -1,4 +1,6 @@
-export const AMBIENT_MOTION_KEY = "nothingdns:ambient-motion";
+// Preserve the existing mouse-button choice; it no longer pauses ambient motion.
+export const POINTER_EFFECTS_KEY = "nothingdns:ambient-motion";
+export const BACKGROUND_MOTION_KEY = "nothingdns:background-motion";
 
 const parse = (value: string | null) =>
   value === "on" ? true : value === "off" ? false : null;

@@ -34,7 +34,8 @@ export function SiteBackground() {
   const svgRef = useRef<SVGSVGElement>(null);
   const effectsRef = useRef<SVGSVGElement>(null);
   const glowId = `field-glow-${useId().replace(/[^a-zA-Z0-9_-]/g, "")}`;
-  const { paused } = useAmbientMotion();
+  const { paused, pointerEnabled } = useAmbientMotion();
+  const pointerController = useRef<((enabled: boolean) => void) | null>(null);
 
   useEffect(() => {
     const svg = svgRef.current,
@@ -76,6 +77,7 @@ export function SiteBackground() {
     const scene = new AmbientField(svg.clientWidth, svg.clientHeight);
     let lastFrameWallAt = performance.now();
     let visible = false,
+      pointerActive = false,
       disposed = false;
     let tap: {
       x: number;
@@ -324,11 +326,17 @@ export function SiteBackground() {
         Math.hypot(event.clientX - tap.x, event.clientY - tap.y) > 9
       )
         tap.blocked = true;
-      if (enabled() && event.pointerType === "mouse")
+      if (pointerActive && enabled() && event.pointerType === "mouse")
         scene.move(event.clientX, event.clientY, inputTime());
     }
     function pointerDown(event: PointerEvent) {
-      if (!enabled() || !event.isPrimary || event.button !== 0) return;
+      if (
+        !pointerActive ||
+        !enabled() ||
+        !event.isPrimary ||
+        event.button !== 0
+      )
+        return;
       tap = {
         x: event.clientX,
         y: event.clientY,
@@ -345,6 +353,7 @@ export function SiteBackground() {
         start.id !== event.pointerId ||
         start.blocked ||
         blocked(event.target) ||
+        !pointerActive ||
         !enabled() ||
         window.getSelection()?.isCollapsed === false ||
         !isSceneTap(start, {
@@ -359,6 +368,31 @@ export function SiteBackground() {
     function leave() {
       scene.leave();
       tap = null;
+    }
+    const passive = { passive: true, capture: true };
+    function setPointerEffects(active: boolean) {
+      if (pointerActive === active) return;
+      pointerActive = active;
+      scene.clearEffects();
+      tap = null;
+      if (active) {
+        window.addEventListener("pointermove", pointerMove, passive);
+        window.addEventListener("pointerdown", pointerDown, passive);
+        window.addEventListener("pointerup", pointerUp, passive);
+        window.addEventListener("pointercancel", leave, passive);
+        document.documentElement.addEventListener("pointerleave", leave, {
+          passive: true,
+        });
+        window.addEventListener("blur", leave);
+      } else {
+        window.removeEventListener("pointermove", pointerMove, true);
+        window.removeEventListener("pointerdown", pointerDown, true);
+        window.removeEventListener("pointerup", pointerUp, true);
+        window.removeEventListener("pointercancel", leave, true);
+        document.documentElement.removeEventListener("pointerleave", leave);
+        window.removeEventListener("blur", leave);
+      }
+      paint();
     }
     const sizes = new ResizeObserver(resize);
     sizes.observe(svg);
@@ -376,19 +410,13 @@ export function SiteBackground() {
       updateActivity();
     });
     observer.observe(svg);
-    const passive = { passive: true, capture: true };
-    window.addEventListener("pointermove", pointerMove, passive);
-    window.addEventListener("pointerdown", pointerDown, passive);
-    window.addEventListener("pointerup", pointerUp, passive);
-    window.addEventListener("pointercancel", leave, passive);
-    document.documentElement.addEventListener("pointerleave", leave, {
-      passive: true,
-    });
-    window.addEventListener("blur", leave);
+    pointerController.current = setPointerEffects;
     window.addEventListener("scroll", scroll, passive);
     window.addEventListener("resize", resize, { passive: true });
     document.addEventListener("visibilitychange", updateActivity);
     return () => {
+      pointerController.current = null;
+      setPointerEffects(false);
       loop.dispose();
       scene.clearEffects();
       scene.step(0);
@@ -397,17 +425,16 @@ export function SiteBackground() {
       disposed = true;
       observer.disconnect();
       sizes.disconnect();
-      window.removeEventListener("pointermove", pointerMove, true);
-      window.removeEventListener("pointerdown", pointerDown, true);
-      window.removeEventListener("pointerup", pointerUp, true);
-      window.removeEventListener("pointercancel", leave, true);
-      document.documentElement.removeEventListener("pointerleave", leave);
-      window.removeEventListener("blur", leave);
       window.removeEventListener("scroll", scroll, true);
       window.removeEventListener("resize", resize);
       document.removeEventListener("visibilitychange", updateActivity);
     };
   }, [paused]);
+
+  // Changing the mouse preference never recreates or restarts the ambient scene.
+  useEffect(() => {
+    pointerController.current?.(pointerEnabled);
+  }, [pointerEnabled, paused]);
 
   return (
     <>

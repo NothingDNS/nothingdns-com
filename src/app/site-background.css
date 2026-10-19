@@ -162,7 +162,7 @@ main,
   }
 }
 /* No pre-hydration effects. A saved explicit opt-in can override the device default. */
-html:not([data-ambient-motion="on"]) .site-interactions {
+html:not([data-mouse-effects="on"]) .site-interactions {
   visibility: hidden;
 }
 html:not([data-ambient-motion="on"]) .dns-network canvas {

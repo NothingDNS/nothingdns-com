@@ -1,6 +1,10 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { createAmbientPreference } from "../src/lib/ambient-preference.ts";
+import {
+  BACKGROUND_MOTION_KEY,
+  POINTER_EFFECTS_KEY,
+  createAmbientPreference,
+} from "../src/lib/ambient-preference.ts";
 
 function device({ saved = null, reduced = false, blocked = false } = {}) {
   const state = { saved, reduced };
@@ -67,4 +71,26 @@ test("cross-tab changes synchronize choices; clearing storage restores the devic
   assert.equal(setting.sync(null), false);
   state.reduced = false;
   assert.equal(setting.current(), true);
+});
+
+test("the saved mouse-button choice never disables ambient background motion", () => {
+  const storage = new Map([[POINTER_EFFECTS_KEY, "off"]]);
+  const preference = (key) =>
+    createAmbientPreference({
+      read: () => storage.get(key) ?? null,
+      write: (value) => storage.set(key, value),
+      reduced: () => false,
+    });
+  const background = preference(BACKGROUND_MOTION_KEY);
+  const pointer = preference(POINTER_EFFECTS_KEY);
+  assert.equal(pointer.load(), false);
+  assert.equal(background.load(), true);
+  assert.equal(pointer.toggle(), true);
+  assert.equal(pointer.toggle(), false);
+  assert.equal(background.current(), true);
+  assert.equal(preference(BACKGROUND_MOTION_KEY).load(), true);
+  assert.equal(background.toggle(), false);
+  assert.equal(preference(BACKGROUND_MOTION_KEY).load(), false);
+  assert.equal(pointer.toggle(), true);
+  assert.equal(background.current(), false);
 });

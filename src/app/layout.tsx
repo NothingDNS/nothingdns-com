@@ -7,6 +7,7 @@ import { SITE_URL } from "@/lib/site";
 import "./globals.css";
 import "./enhancements.css";
 import "./appearance.css";
+import "./oxog-studio.css";
 import "./hero-network.css";
 import "./site-background.css";
 

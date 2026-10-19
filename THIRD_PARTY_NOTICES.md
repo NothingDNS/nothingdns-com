@@ -1,7 +1,11 @@
 # Third-party notices
 
-The appearance picker design and OXOGNET studio section (including the animated
-SVG symbol) are adapted from [cobaltdb/cobaltdb-site](https://github.com/cobaltdb/cobaltdb-site).
+The appearance picker design and original OXOGNET SVG geometry are adapted
+from [cobaltdb/cobaltdb-site](https://github.com/cobaltdb/cobaltdb-site).
+The compact OXOG footer layout, copy, typography, colors, and repeating SVG
+drawing animation match [Mammoth Engine](https://mammothengine.com/), inspected
+on 2026-10-19. Space Grotesk and Manrope are self-hosted through Next.js Font
+and scoped to that footer band.
 The OXOGNET name and symbol identify their respective owner.
 
 ```text

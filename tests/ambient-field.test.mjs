@@ -6,6 +6,37 @@ const advance = (scene, seconds, hz = 60) => {
   for (let i = 0; i < seconds * hz; i++) scene.step(1 / hz);
 };
 
+test("clearing mouse reactions preserves the ambient timeline and drifting geometry", () => {
+  const scene = new AmbientField(1440, 900);
+  scene.move(400, 300);
+  scene.burst(400, 300);
+  advance(scene, 0.4);
+  const time = scene.time;
+  const positions = scene.nodes.map(({ x, y, angle }) => ({ x, y, angle }));
+  scene.clearEffects();
+  assert.equal(scene.time, time);
+  advance(scene, 0.5);
+  assert.ok(scene.time > time);
+  assert.ok(
+    scene.nodes.some(
+      (node, i) =>
+        node.visible &&
+        (node.x !== positions[i].x ||
+          node.y !== positions[i].y ||
+          node.angle !== positions[i].angle),
+    ),
+  );
+  assert.equal(scene.pointer.energy, 0);
+  assert.equal(
+    scene.waves.length +
+      scene.particles.length +
+      scene.trails.length +
+      scene.relays.length,
+    0,
+  );
+  assert.ok(scene.nodes.every((node) => node.activation === 0));
+});
+
 test("rapid clicks have a fixed budget and expire without extending repeated waves", () => {
   const scene = new AmbientField(1440, 900);
   scene.burst(100, 100);
