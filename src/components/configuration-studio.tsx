@@ -154,9 +154,9 @@ export function ConfigurationStudio() {
         <motion.div
           className="recipe-output"
           key={preset}
-          initial={{ opacity: reducedMotion ? 1 : 0, y: reducedMotion ? 0 : 8 }}
+          initial={false}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.2 }}
+          transition={{ duration: reducedMotion ? 0 : 0.2 }}
         >
           <div className="recipe-output-label">
             <FileCode2 size={16} />

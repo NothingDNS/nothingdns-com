@@ -1,5 +1,6 @@
 /* The compact OXOG footer from mammothengine.com, scoped to this shared band. */
 .oxog-studio {
+  --font-oxog-display: var(--font-space-grotesk);
   --oxog-pink: #ed0878;
   --oxog-purple: #b477e4;
   --studio-text: #f6f0e4;

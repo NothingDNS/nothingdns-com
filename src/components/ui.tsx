@@ -1,6 +1,5 @@
 "use client";
 
-import { motion } from "motion/react";
 import { ArrowUpRight, Check, Copy } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
@@ -14,16 +13,52 @@ export function Reveal({
   className?: string;
   delay?: number;
 }) {
+  const element = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const node = element.current;
+    const preference = window.matchMedia("(prefers-reduced-motion: reduce)");
+    if (!node || preference.matches || !("IntersectionObserver" in window))
+      return;
+
+    let animation: Animation | undefined;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting || document.hidden) return;
+        observer.disconnect();
+        // HTML stays visible until enhancement runs; cancellation restores that base state.
+        if (!preference.matches && typeof node.animate === "function") {
+          animation = node.animate(
+            [
+              { opacity: 0.35, transform: "translateY(16px)" },
+              { opacity: 1, transform: "none" },
+            ],
+            {
+              duration: 650,
+              delay: Math.min(Math.max(delay, 0), 0.5) * 1000,
+              easing: "cubic-bezier(.22,1,.36,1)",
+            },
+          );
+        }
+      },
+      { threshold: 0.05 },
+    );
+    const stop = () => {
+      if (preference.matches || document.hidden) animation?.cancel();
+    };
+    observer.observe(node);
+    preference.addEventListener("change", stop);
+    document.addEventListener("visibilitychange", stop);
+    return () => {
+      observer.disconnect();
+      animation?.cancel();
+      preference.removeEventListener("change", stop);
+      document.removeEventListener("visibilitychange", stop);
+    };
+  }, [delay]);
   return (
-    <motion.div
-      className={className}
-      initial={{ opacity: 0, y: 24 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "0px 0px -30px 0px" }}
-      transition={{ duration: 0.65, delay, ease: [0.22, 1, 0.36, 1] }}
-    >
+    <div ref={element} className={className}>
       {children}
-    </motion.div>
+    </div>
   );
 }
 
@@ -143,7 +178,11 @@ export function CodeBlock({
         <span>{language}</span>
       </div>
       <div className="code-body">
-        <pre>
+        <pre
+          tabIndex={0}
+          role="region"
+          aria-label={`${label} code, ${language}`}
+        >
           <code>{code}</code>
         </pre>
         <CopyButton value={code} compact />

@@ -86,7 +86,7 @@ export function QueryJourney() {
         ))}
       </div>
       <div id="stage-panel" role="tabpanel" aria-labelledby={`stage-${active}`}>
-        <AnimatePresence mode="wait">
+        <AnimatePresence mode="wait" initial={false}>
           <motion.div
             key={active}
             className="journey-detail"

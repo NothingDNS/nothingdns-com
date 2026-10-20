@@ -388,79 +388,6 @@
   body .container {
     width: calc(100% - 2.5rem);
   }
-  body .site-header {
-    height: 4.375rem;
-  }
-  body .header-inner {
-    gap: 0.9375rem;
-  }
-  body .brand {
-    font-size: 1.375rem;
-  }
-  body .brand > svg {
-    width: 11.25rem;
-  }
-  body .desktop-nav,
-  body .github-nav {
-    display: none;
-  }
-  body .header-actions {
-    gap: 0.5rem;
-  }
-  body .icon-button {
-    height: 2.5rem;
-    width: 2.5rem;
-  }
-  body .menu-toggle {
-    display: flex;
-  }
-  body .mobile-nav {
-    display: flex;
-    position: fixed;
-    inset: 4.375rem 0 0;
-    z-index: 39;
-    background: var(--bg);
-    padding: 2.375rem 1.5625rem;
-    flex-direction: column;
-    overflow-y: auto;
-  }
-  body .mobile-nav-label {
-    color: var(--subtle);
-    font-size: 0.5625rem;
-    margin-bottom: 1.5rem;
-  }
-  body .mobile-nav > a:not(.button) {
-    display: flex;
-    align-items: center;
-    gap: 1.125rem;
-    font-size: 1.6875rem;
-    padding: 1.5rem 0;
-    border-bottom: 0.0625rem solid var(--line);
-    letter-spacing: -0.03em;
-  }
-  body .mobile-nav > a > span {
-    color: var(--subtle);
-    font-size: 0.5625rem;
-  }
-  body .mobile-nav > a > svg {
-    margin-left: auto;
-    color: var(--accent-text);
-  }
-  body .mobile-nav > .button {
-    margin-top: 2rem;
-    width: 100%;
-    justify-content: space-between;
-    font-size: 0.875rem;
-  }
-  body .mobile-nav > .button svg {
-    color: var(--button-ink);
-  }
-  body .mobile-nav-footer {
-    color: var(--subtle);
-    font-size: 0.5rem;
-    margin-top: auto;
-    padding-top: 1.875rem;
-  }
   body .hero {
     padding-top: 3.3125rem;
     padding-bottom: 3.75rem;
@@ -1257,5 +1184,82 @@
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+  }
+}
+
+/* Switch navigation before its measured minimum content width is reached. */
+@media (max-width: 850px) {
+  body .site-header {
+    height: 4.375rem;
+  }
+  body .header-inner {
+    gap: 0.9375rem;
+  }
+  body .brand {
+    font-size: 1.375rem;
+  }
+  body .brand > svg {
+    width: 11.25rem;
+  }
+  body .desktop-nav,
+  body .github-nav {
+    display: none;
+  }
+  body .header-actions {
+    gap: 0.5rem;
+  }
+  body .icon-button {
+    height: 2.5rem;
+    width: 2.5rem;
+  }
+  body .menu-toggle {
+    display: flex;
+  }
+  body .mobile-nav {
+    display: flex;
+    position: fixed;
+    inset: 4.375rem 0 0;
+    z-index: 39;
+    background: var(--bg);
+    padding: 2.375rem 1.5625rem;
+    flex-direction: column;
+    overflow-y: auto;
+  }
+  body .mobile-nav-label {
+    color: var(--subtle);
+    font-size: 0.5625rem;
+    margin-bottom: 1.5rem;
+  }
+  body .mobile-nav > a:not(.button) {
+    display: flex;
+    align-items: center;
+    gap: 1.125rem;
+    font-size: 1.6875rem;
+    padding: 1.5rem 0;
+    border-bottom: 0.0625rem solid var(--line);
+    letter-spacing: -0.03em;
+  }
+  body .mobile-nav > a > span {
+    color: var(--subtle);
+    font-size: 0.5625rem;
+  }
+  body .mobile-nav > a > svg {
+    margin-left: auto;
+    color: var(--accent-text);
+  }
+  body .mobile-nav > .button {
+    margin-top: 2rem;
+    width: 100%;
+    justify-content: space-between;
+    font-size: 0.875rem;
+  }
+  body .mobile-nav > .button svg {
+    color: var(--button-ink);
+  }
+  body .mobile-nav-footer {
+    color: var(--subtle);
+    font-size: 0.5rem;
+    margin-top: auto;
+    padding-top: 1.875rem;
   }
 }

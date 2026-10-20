@@ -51,7 +51,7 @@ export function Header() {
         (event.shiftKey ? last : first)?.focus();
       }
     };
-    const desktop = window.matchMedia("(min-width: 701px)");
+    const desktop = window.matchMedia("(min-width: 851px)");
     const resize = () => {
       if (desktop.matches) setOpen(false);
     };

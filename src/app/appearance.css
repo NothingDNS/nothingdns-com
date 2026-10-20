@@ -338,7 +338,7 @@
     transition: none;
   }
 }
-@media (max-width: 1360px) {
+@media (max-width: 1600px) {
   body .header-cta {
     display: none;
   }

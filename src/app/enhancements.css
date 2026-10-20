@@ -8,6 +8,7 @@
 .search-dialog {
   width: min(42rem, calc(100% - 2rem));
   max-height: 82vh;
+  max-height: min(82dvh, calc(100dvh - 2rem));
   padding: 0;
   margin: min(12vh, 7rem) auto auto;
   color: var(--text);
@@ -17,6 +18,9 @@
   box-shadow: 0 2rem 8rem #0005;
 }
 .search-dialog[open] {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
   animation: search-enter 0.18s ease-out;
 }
 .search-dialog::backdrop {
@@ -27,6 +31,7 @@ body:has(.search-dialog[open]) {
   overflow: hidden;
 }
 .search-input-row {
+  flex-shrink: 0;
   display: flex;
   align-items: center;
   gap: 1rem;
@@ -56,6 +61,7 @@ body:has(.search-dialog[open]) {
   display: flex;
 }
 .search-results {
+  min-height: 0;
   padding: 0.75rem;
   max-height: 58vh;
   overflow-y: auto;
@@ -100,6 +106,7 @@ body:has(.search-dialog[open]) {
   letter-spacing: 0.1em;
 }
 .search-hints {
+  flex-shrink: 0;
   display: flex;
   gap: 1.4rem;
   padding: 0.9rem 1.5rem;

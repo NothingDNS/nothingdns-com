@@ -2,13 +2,14 @@
 @import url("./wide-screen.css");
 
 :root {
+  --font-quicksand: "Quicksand", "Quicksand Fallback", sans-serif;
   --bg: #0c0d10;
   --surface: #15171c;
   --surface-raised: #1d2026;
   --band: #111318;
   --text: #f4f5f6;
   --muted: #a0a4ad;
-  --subtle: #7d828d;
+  --subtle: #969ba6;
   --accent: #eff1f5;
   --accent-text: #c0c9d6;
   --accent-faint: #ffffff07;
@@ -26,7 +27,7 @@
   --band: #eff0f3;
   --text: #1a1d24;
   --muted: #626672;
-  --subtle: #6d727e;
+  --subtle: #626774;
   --accent: #1a1d24;
   --accent-text: #586474;
   --accent-faint: #25324907;
@@ -47,10 +48,11 @@ html {
   scroll-padding-top: 6.875rem;
 }
 body {
+  --font-mono: var(--font-jetbrains), monospace;
   margin: 0;
   background: var(--bg);
   color: var(--text);
-  font-family: var(--font-geist), Arial, sans-serif;
+  font-family: var(--font-space-grotesk), Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
 }
 ::selection {
@@ -91,7 +93,9 @@ button {
 a:focus-visible,
 button:focus-visible,
 input:focus-visible,
-select:focus-visible {
+select:focus-visible,
+summary:focus-visible,
+[tabindex="0"]:focus-visible {
   outline: 0.125rem solid var(--accent-text);
   outline-offset: 0.3125rem;
 }
@@ -125,6 +129,11 @@ h4 {
   font-family: var(--font-mono), monospace;
   font-size: 0.625rem;
   letter-spacing: 0.055em;
+}
+code,
+kbd,
+samp {
+  font-family: var(--font-mono);
 }
 .muted {
   color: var(--muted);
@@ -214,6 +223,7 @@ h4 {
   margin-right: auto;
 }
 .desktop-nav a {
+  white-space: nowrap;
   font-size: 0.8125rem;
   color: var(--muted);
   position: relative;

@@ -1,25 +1,11 @@
-import { Manrope, Space_Grotesk } from "next/font/google";
+import { studioBody } from "@/lib/fonts";
 import { ArrowUpRight } from "lucide-react";
 import { OxogMark } from "./oxog-mark";
-
-const body = Manrope({
-  subsets: ["latin"],
-  variable: "--font-oxog-body",
-  display: "swap",
-});
-const display = Space_Grotesk({
-  subsets: ["latin"],
-  variable: "--font-oxog-display",
-  display: "swap",
-});
 
 // Shared OXOG footer from mammothengine.com; see THIRD_PARTY_NOTICES.md.
 export function OxogStudio() {
   return (
-    <a
-      className={["oxog-studio", body.variable, display.variable].join(" ")}
-      href="https://oxog.net"
-    >
+    <a className={`oxog-studio ${studioBody.variable}`} href="https://oxog.net">
       <OxogMark />
       <div>
         <span className="eyebrow">PART OF A BIGGER PICTURE</span>

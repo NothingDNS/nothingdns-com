@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { spaceGrotesk, jetbrains } from "@/lib/fonts";
 import { Providers } from "@/components/providers";
 import { Footer, Header } from "@/components/shell";
 import { SiteBackground } from "@/components/site-background";
@@ -10,17 +10,6 @@ import "./appearance.css";
 import "./oxog-studio.css";
 import "./hero-network.css";
 import "./site-background.css";
-
-const geist = Geist({
-  subsets: ["latin"],
-  variable: "--font-geist",
-  display: "swap",
-});
-const mono = Geist_Mono({
-  subsets: ["latin"],
-  variable: "--font-mono",
-  display: "swap",
-});
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -62,7 +51,7 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" data-scroll-behavior="smooth" suppressHydrationWarning>
-      <body className={`${geist.variable} ${mono.variable}`}>
+      <body className={`${spaceGrotesk.variable} ${jetbrains.variable}`}>
         <Providers>
           <SiteBackground />
           <a href="#main" className="skip-link">

@@ -323,7 +323,12 @@ export function DashboardDemo() {
                   </select>
                 </label>
               </div>
-              <div className="demo-table-wrap">
+              <div
+                className="demo-table-wrap"
+                tabIndex={0}
+                role="region"
+                aria-label="Sample query log"
+              >
                 <table className="demo-table">
                   <thead>
                     <tr>
@@ -355,7 +360,7 @@ export function DashboardDemo() {
                   </tbody>
                 </table>
                 {queries.length === 0 && (
-                  <div className="query-empty">
+                  <div className="query-empty" role="status">
                     No matching queries. Try another domain or filter.
                   </div>
                 )}
@@ -377,7 +382,12 @@ export function DashboardDemo() {
                   </p>
                 </div>
               </div>
-              <div className="demo-table-wrap">
+              <div
+                className="demo-table-wrap"
+                tabIndex={0}
+                role="region"
+                aria-label="Sample DNS zones"
+              >
                 <table className="demo-table">
                   <thead>
                     <tr>
